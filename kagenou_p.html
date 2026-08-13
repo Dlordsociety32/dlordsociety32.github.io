@@ -1,0 +1,2210 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" class="dark scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kagenou ($XEOS) - Algorand Memecoin</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+	<meta name="description" content="The ultimate Shadow memecoin token. Inspired by the legendary Cid Kagenou & built on Algorand's lightning-fast blockchain. No high gas, no failed swaps!">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.3.0/css/all.min.css" integrity="sha384-sTlsophtwz/I4myskS3OIJf5VvEojkXKZyBTWZm0YD/K1pN7C5wpBPLyrsbr1SU2" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        algo: {
+                            DEFAULT: '#000000',
+                            light: '#1f2937',
+                            accent: '#3b82f6'
+                        },
+                        shadow: {
+                            base: '#080511',
+                            card: '#120d24',
+                            border: '#2a1e4a',
+                            purple: '#9d4edd',
+                            glow: '#c77dff',
+                            gold: '#ffb703'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                        display: ['Orbitron', 'sans-serif'],
+                    },
+                    boxShadow: {
+                        'neon-purple': '0 0 25px rgba(157, 78, 221, 0.45)',
+                        'neon-glow': '0 0 50px rgba(199, 125, 255, 0.3)',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #080511;
+            color: #f3f4f6;
+            overflow-x: hidden;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+        
+        .font-display {
+            font-family: 'Orbitron', sans-serif;
+        }
+
+        .glass-panel {
+            background: rgba(18, 13, 36, 0.75);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(157, 78, 221, 0.25);
+        }
+
+        .glass-nav {
+            background: rgba(8, 5, 17, 0.85);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-bottom: 1px solid rgba(157, 78, 221, 0.2);
+        }
+
+        .text-glow {
+            text-shadow: 0 0 12px rgba(199, 125, 255, 0.6);
+        }
+
+        .bg-grid {
+            background-size: 40px 40px;
+            background-image: 
+                linear-gradient(to right, rgba(157, 78, 221, 0.05) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(157, 78, 221, 0.05) 1px, transparent 1px);
+        }
+
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #080511;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #2a1e4a;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #9d4edd;
+        }
+
+        select option {
+            background-color: #080511;
+            color: #ffffff;
+        }
+    </style>
+</head>
+<body class="bg-grid antialiased selection:bg-shadow-purple selection:text-white relative">
+
+    <canvas id="shadowCanvas" class="fixed inset-0 pointer-events-none z-0"></canvas>
+
+    <div id="toast" class="fixed bottom-5 right-5 z-50 transform translate-y-20 opacity-0 transition-all duration-300 glass-panel px-5 py-3 rounded-xl border border-shadow-purple flex items-center gap-3 shadow-neon-purple pointer-events-none">
+        <i class="fa-solid fa-circle-check text-shadow-glow text-xl"></i>
+        <div>
+            <h4 class="font-bold text-sm text-white" id="toastTitle">Success!</h4>
+            <p class="text-xs text-gray-300" id="toastMessage">ASA ID copied to clipboard.</p>
+        </div>
+    </div>
+
+    <header class="fixed top-0 left-0 w-full z-40 glass-nav transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            
+            <a href="#" class="flex items-center gap-3 group">
+                <div class="relative w-11 h-11 rounded-xl bg-gradient-to-tr from-purple-900 via-shadow-purple to-pink-500 p-0.5 shadow-neon-purple group-hover:scale-105 transition-transform">
+                    <div class="w-full h-full bg-shadow-base rounded-[10px] flex items-center justify-center overflow-hidden">
+                        <span class="font-display font-black text-xl text-shadow-glow tracking-tighter group-hover:rotate-12 transition-transform">K</span>
+                    </div>
+                    <div class="absolute -bottom-1 -right-1 bg-black rounded-full p-0.5 border border-shadow-purple">
+                        <img src="https://chocolate-wonderful-cattle-882.mypinata.cloud/ipfs/bafybeiglo7avyqxrqhkmk4vb23dshl2uawngggmhqhleaubzqllsqv7bzi" alt="Algorand" class="w-3.5 h-3.5" onerror="this.onerror=null; this.src='https://placehold.co/14x14/9d4edd/ffffff?text=A'">
+                    </div>
+                </div>
+                <div class="flex flex-col">
+                    <div class="flex items-center gap-2">
+                        <span class="font-display font-black text-lg text-white tracking-wider">KAGENOU</span>
+                        <span class="px-1.5 py-0.5 text-[10px] font-bold bg-shadow-purple/30 text-shadow-glow border border-shadow-purple/50 rounded">ASA</span>
+                    </div>
+                    <span class="text-xs text-purple-300/70 font-mono tracking-widest">$XEOS</span>
+                </div>
+            </a>
+
+            <nav class="hidden lg:flex items-center space-x-6 rtl:space-x-reverse">
+                <a href="#about" class="text-sm font-medium text-gray-300 hover:text-shadow-glow transition-colors" data-i18n="navAbout">About</a>
+                <a href="#tokenomics" class="text-sm font-medium text-gray-300 hover:text-shadow-glow transition-colors" data-i18n="navTokenomics">Tokenomics</a>
+                <a href="#buy" class="text-sm font-medium text-gray-300 hover:text-shadow-glow transition-colors" data-i18n="navBuy">How to Buy</a>
+                <a href="#calculator" class="text-sm font-medium text-gray-300 hover:text-shadow-glow transition-colors" data-i18n="navCalc">Calculator</a>
+                <a href="#roadmap" class="text-sm font-medium text-gray-300 hover:text-shadow-glow transition-colors" data-i18n="navRoadmap">Roadmap</a>
+                <a href="#faq" class="text-sm font-medium text-gray-300 hover:text-shadow-glow transition-colors" data-i18n="navFaq">FAQ</a>
+            </nav>
+
+            <div class="flex items-center gap-3">
+                <div class="relative hidden sm:block">
+                    <select id="langSelectDesktop" onchange="changeLanguage(this.value)" class="appearance-none px-3 py-1.5 pr-8 rounded-lg glass-panel text-xs font-semibold text-purple-200 border border-shadow-purple/50 hover:border-shadow-glow cursor-pointer focus:outline-none">
+                        <option value="en">🇬🇧 English</option>
+                        <option value="ms">🇲🇾 Bahasa Melayu</option>
+                        <option value="id">🇮🇩 Bahasa Indonesia</option>
+                        <option value="ja">🇯🇵 日本語</option>
+                        <option value="ko">🇰🇷 한국어</option>
+                        <option value="zh">🇨🇳 中文 (简体)</option>
+                        <option value="ar">🇸🇦 العربية</option>
+                        <option value="it">🇮🇹 Italiano</option>
+                        <option value="es">🇪🇸 Español</option>
+                        <option value="de">🇩🇪 Deutsch</option>
+                        <option value="uk">🇺🇦 Українська</option>
+                        <option value="ru">🇷🇺 Русский</option>
+                    </select>
+                    <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-shadow-glow">
+                        <i class="fa-solid fa-globe text-xs"></i>
+                    </div>
+                </div>
+
+                <a href="https://vestige.fi" target="_blank" rel="noopener" class="hidden sm:inline-flex items-center gap-2 px-5 py-2.5 rounded-xl font-bold text-xs uppercase tracking-wider bg-gradient-to-r from-purple-700 via-shadow-purple to-pink-600 hover:from-purple-600 hover:to-pink-500 text-white shadow-neon-purple hover:scale-105 active:scale-95 transition-all">
+                    <span>Vestige DEX</span>
+                    <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+                </a>
+
+                <button id="mobileMenuBtn" class="lg:hidden p-2.5 rounded-xl glass-panel text-gray-200 hover:text-white border border-shadow-purple/40 focus:outline-none" aria-label="Toggle Menu">
+                    <i class="fa-solid fa-bars-staggered text-lg" id="menuIcon"></i>
+                </button>
+            </div>
+        </div>
+
+        <div id="mobileDrawer" class="hidden lg:hidden glass-panel border-t border-shadow-purple/30 px-6 py-6 transition-all duration-300 space-y-4">
+            <div class="mb-4 pt-1">
+                <label class="block text-xs font-mono text-purple-300 mb-2">🌐 Select Language / Pilih Bahasa:</label>
+                <select id="langSelectMobile" onchange="changeLanguage(this.value)" class="w-full px-3 py-2.5 rounded-xl glass-panel text-xs font-semibold text-purple-200 border border-shadow-purple/60 focus:outline-none">
+                    <option value="en">🇬🇧 English</option>
+                    <option value="ms">🇲🇾 Bahasa Melayu</option>
+                    <option value="id">🇮🇩 Bahasa Indonesia</option>
+                    <option value="ja">🇯🇵 日本語</option>
+                    <option value="ko">🇰🇷 한국어</option>
+                    <option value="zh">🇨🇳 中文 (简体)</option>
+                    <option value="ar">🇸🇦 العربية</option>
+                    <option value="it">🇮🇹 Italiano</option>
+                    <option value="es">🇪🇸 Español</option>
+                    <option value="de">🇩🇪 Deutsch</option>
+                    <option value="uk">🇺🇦 Українська</option>
+                    <option value="ru">🇷🇺 Русский</option>
+                </select>
+            </div>
+
+            <a href="#about" class="mobile-nav-link block text-base font-medium text-gray-200 hover:text-shadow-glow py-2 border-b border-purple-900/40" data-i18n="navAbout">About</a>
+            <a href="#tokenomics" class="mobile-nav-link block text-base font-medium text-gray-200 hover:text-shadow-glow py-2 border-b border-purple-900/40" data-i18n="navTokenomics">Tokenomics</a>
+            <a href="#buy" class="mobile-nav-link block text-base font-medium text-gray-200 hover:text-shadow-glow py-2 border-b border-purple-900/40" data-i18n="navBuy">How to Buy</a>
+            <a href="#calculator" class="mobile-nav-link block text-base font-medium text-gray-200 hover:text-shadow-glow py-2 border-b border-purple-900/40" data-i18n="navCalc">Calculator</a>
+            <a href="#roadmap" class="mobile-nav-link block text-base font-medium text-gray-200 hover:text-shadow-glow py-2 border-b border-purple-900/40" data-i18n="navRoadmap">Roadmap</a>
+            <a href="#faq" class="mobile-nav-link block text-base font-medium text-gray-200 hover:text-shadow-glow py-2 border-b border-purple-900/40" data-i18n="navFaq">FAQ</a>
+            
+            <div class="pt-2 flex flex-col gap-3">
+                <a href="https://vestige.fi" target="_blank" class="w-full py-3 rounded-xl font-bold text-center text-sm bg-gradient-to-r from-purple-600 to-pink-600 text-white shadow-neon-purple flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-bolt"></i>
+                    <span>Swap on Vestige DEX</span>
+                </a>
+                <button onclick="copyASA('3672907552')" class="w-full py-2.5 rounded-xl font-semibold text-center text-xs bg-purple-950/80 border border-shadow-purple text-shadow-glow">
+                    <i class="fa-solid fa-copy mr-2"></i> ASA ID: 3672907552
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="relative z-10 pt-28">
+
+        <section class="relative min-h-[85vh] flex items-center justify-center px-4 sm:px-6 lg:px-8 overflow-hidden py-12">
+            <div class="max-w-5xl mx-auto text-center space-y-8">
+                
+                <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-panel border border-shadow-purple/50 shadow-neon-purple animate-pulse">
+                    <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+                    <span class="text-xs font-mono tracking-wider text-purple-200" data-i18n="heroBadge">⚡ Powered by Algorand • Instant & Nearly Zero Gas Fees</span>
+                </div>
+
+                <div class="space-y-4">
+                    <h1 class="text-4xl sm:text-6xl md:text-7xl font-display font-black tracking-tight leading-none text-white">
+                        <span class="block text-transparent bg-clip-text bg-gradient-to-r from-white via-purple-200 to-purple-400">I AM ATOMIC.</span>
+                        <span class="block mt-2 text-transparent bg-clip-text bg-gradient-to-r from-shadow-glow via-purple-400 to-pink-500 text-glow">
+                            I AM $XEOS.
+                        </span>
+                    </h1>
+                    <p class="max-w-2xl mx-auto text-base sm:text-lg text-purple-200/80 leading-relaxed" data-i18n="heroTagline">
+                        The ultimate Shadow memecoin token. Inspired by the legendary Cid Kagenou & built on Algorand's lightning-fast blockchain. No high gas, no failed swaps!
+                    </p>
+                </div>
+
+                <div class="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
+                    <a href="https://vestige.fi" target="_blank" class="w-full sm:w-auto px-8 py-4 rounded-xl font-display font-bold text-sm bg-gradient-to-r from-purple-600 via-shadow-purple to-pink-600 hover:from-purple-500 hover:to-pink-500 text-white shadow-neon-purple hover:shadow-neon-glow hover:scale-105 active:scale-95 transition-all text-center flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-cart-shopping"></i>
+                        <span data-i18n="buyBtn">BUY $XEOS NOW</span>
+                    </a>
+
+                    <button onclick="copyASA('3672907552')" class="w-full sm:w-auto px-6 py-4 rounded-xl font-mono text-sm glass-panel border border-shadow-purple/60 hover:border-shadow-glow text-purple-200 hover:text-white transition-all flex items-center justify-center gap-3 group">
+                        <i class="fa-solid fa-copy text-shadow-glow group-hover:scale-110 transition-transform"></i>
+                        <span>ASA ID: <strong class="text-white">3672907552</strong></span>
+                    </button>
+
+                    <button onclick="triggerAtomicBlast()" class="w-full sm:w-auto px-6 py-4 rounded-xl font-display text-sm glass-panel border border-amber-500/50 hover:border-amber-400 text-amber-300 hover:text-white transition-all flex items-center justify-center gap-2 group shadow-lg">
+                        <i class="fa-solid fa-radiation text-amber-400 group-hover:rotate-180 transition-transform duration-700"></i>
+                        <span data-i18n="atomicBtn">ATOMIC BLAST!</span>
+                    </button>
+                </div>
+
+                <div class="pt-10 grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto">
+                    <div class="glass-panel p-4 rounded-2xl border border-shadow-purple/30">
+                        <div class="text-xs text-purple-300/60 uppercase font-mono" data-i18n="blockTimeLabel">Block Time</div>
+                        <div class="text-xl sm:text-2xl font-display font-bold text-shadow-glow" data-i18n="blockTimeVal">2.8 Seconds</div>
+                    </div>
+                    <div class="glass-panel p-4 rounded-2xl border border-shadow-purple/30">
+                        <div class="text-xs text-purple-300/60 uppercase font-mono" data-i18n="gasFeeLabel">Gas Fee</div>
+                        <div class="text-xl sm:text-2xl font-display font-bold text-emerald-400">&lt; $0.001</div>
+                    </div>
+                    <div class="glass-panel p-4 rounded-2xl border border-shadow-purple/30">
+                        <div class="text-xs text-purple-300/60 uppercase font-mono" data-i18n="maxSupplyLabel">Max Supply</div>
+                        <div class="text-xl sm:text-2xl font-display font-bold text-amber-400">18.4M $XEOS</div>
+                    </div>
+                    <div class="glass-panel p-4 rounded-2xl border border-shadow-purple/30">
+                        <div class="text-xs text-purple-300/60 uppercase font-mono" data-i18n="taxLabel">Buy/Sell Tax</div>
+                        <div class="text-xl sm:text-2xl font-display font-bold text-pink-400">0% / 0%</div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <section id="about" class="py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+                
+                <div class="relative group">
+                    <div class="absolute -inset-1 bg-gradient-to-r from-purple-600 via-pink-600 to-shadow-purple rounded-3xl blur-xl opacity-50 group-hover:opacity-75 transition duration-1000"></div>
+                    <div class="relative glass-panel p-8 rounded-3xl border border-shadow-purple space-y-6">
+                        <div class="flex items-center justify-between">
+                            <span class="px-3 py-1 text-xs font-mono rounded-full bg-purple-950 text-shadow-glow border border-shadow-purple">SHADOW GARDEN ASA</span>
+                            <i class="fa-solid fa-moon text-shadow-glow text-2xl"></i>
+                        </div>
+                        
+                        <div class="aspect-video w-full rounded-2xl bg-gradient-to-br from-purple-950/80 via-black to-shadow-card flex items-center justify-center border border-purple-900/50 p-6 relative overflow-hidden">
+                            <div class="absolute inset-0 bg-grid opacity-30"></div>
+                            <div class="text-center z-10 space-y-2">
+                                <span class="font-display text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-shadow-glow to-purple-400">
+                                    $XEOS
+                                </span>
+                                <p class="text-xs text-purple-300 font-mono">Algorand Standard Asset (ASA)</p>
+                            </div>
+                        </div>
+
+                        <ul class="space-y-3 text-sm text-gray-300">
+                            <li class="flex items-center gap-3">
+                                <i class="fa-solid fa-shield-halved text-shadow-glow"></i>
+                                <span data-i18n="featureLp">100% Liquidity Locked Forever</span>
+                            </li>
+                            <li class="flex items-center gap-3">
+                                <i class="fa-solid fa-bolt text-amber-400"></i>
+                                <span data-i18n="featureSpeed">Algorand Instant Sub-3s Finality</span>
+                            </li>
+                            <li class="flex items-center gap-3">
+                                <i class="fa-solid fa-leaf text-emerald-400"></i>
+                                <span data-i18n="featureEco">Pure Proof of Stake & Carbon-Negative</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="space-y-6">
+                    <div class="inline-block px-3 py-1 rounded-lg bg-purple-900/40 text-shadow-glow font-mono text-xs border border-shadow-purple/40" data-i18n="aboutTag">
+                        // THE LEGEND OF KAGENOU
+                    </div>
+                    <h2 class="text-3xl sm:text-4xl font-display font-bold text-white leading-tight" data-i18n="aboutTitle">
+                        Operate in the Shadows, Rule the Crypto World.
+                    </h2>
+                    <p class="text-gray-300 leading-relaxed" data-i18n="aboutDesc">
+                        Kagenou ($XEOS) was crafted for anime Shadow fans and the Algorand community. We built a token free from slow confirmation times, free from crazy Ethereum gas fees, backed by the best pure proof-of-stake chain.
+                    </p>
+
+                    <div class="grid grid-cols-2 gap-4 pt-2">
+                        <div class="glass-panel p-4 rounded-xl border border-shadow-purple/20">
+                            <h3 class="font-bold text-white text-base font-display" data-i18n="featurePposTitle">Pure Proof-of-Stake</h3>
+                            <p class="text-xs text-purple-200/70 mt-1" data-i18n="featurePposDesc">Forkless security powered by Algorand.</p>
+                        </div>
+                        <div class="glass-panel p-4 rounded-xl border border-shadow-purple/20">
+                            <h3 class="font-bold text-white text-base font-display" data-i18n="featureCommTitle">Community Owned</h3>
+                            <p class="text-xs text-purple-200/70 mt-1" data-i18n="featureCommDesc">100% community-driven ecosystem.</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <section id="tokenomics" class="py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto border-t border-purple-900/30">
+            <div class="text-center space-y-4 mb-16">
+                <h2 class="text-3xl sm:text-5xl font-display font-black text-white" data-i18n="tokTitle">
+                    TOKENOMICS $XEOS
+                </h2>
+                <p class="text-purple-200/70 max-w-xl mx-auto text-sm sm:text-base" data-i18n="tokSubtitle">
+                    Fair, transparent supply distribution of 18.4 Million tokens forged on the Algorand blockchain.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                
+                <div class="glass-panel p-6 rounded-3xl border border-shadow-purple/40 hover:border-shadow-glow transition-all hover:-translate-y-2 relative overflow-hidden group flex flex-col justify-between">
+                    <div>
+                        <div class="w-12 h-12 rounded-2xl bg-purple-900/50 flex items-center justify-center text-shadow-glow text-2xl mb-4">
+                            <i class="fa-solid fa-coins"></i>
+                        </div>
+                        <span class="text-xs font-mono text-purple-300 uppercase tracking-widest" data-i18n="maxSupplyTitle">Max Supply</span>
+                        <h3 class="text-2xl font-display font-bold text-white my-2">18,400,000</h3>
+                        <p class="text-xs text-gray-300 leading-relaxed" data-i18n="maxSupplyDesc">
+                            18.4 Million $XEOS tokens hard-capped. No future minting allowed.
+                        </p>
+                    </div>
+                    <div class="mt-6 pt-4 border-t border-purple-900/40 flex justify-between text-xs font-mono">
+                        <span class="text-gray-400">ASA Standard:</span>
+                        <span class="text-shadow-glow">Algorand ASA</span>
+                    </div>
+                </div>
+
+                <div class="glass-panel p-6 rounded-3xl border border-shadow-purple/40 hover:border-shadow-glow transition-all hover:-translate-y-2 relative overflow-hidden group flex flex-col justify-between">
+                    <div>
+                        <div class="w-12 h-12 rounded-2xl bg-purple-900/50 flex items-center justify-center text-amber-400 text-2xl mb-4">
+                            <i class="fa-solid fa-fire text-amber-400"></i>
+                        </div>
+                        <span class="text-xs font-mono text-purple-300 uppercase tracking-widest" data-i18n="lpTitle">Liquidity Pool (LP)</span>
+                        <h3 class="text-2xl font-display font-bold text-white my-2">80% (14.72M)</h3>
+                        <p class="text-xs text-gray-300 leading-relaxed" data-i18n="lpDesc">
+                            14,720,000 $XEOS added to DEX LP and locked forever for safe trading.
+                        </p>
+                    </div>
+                    <div class="mt-6 pt-4 border-t border-purple-900/40 flex justify-between text-xs font-mono">
+                        <span class="text-gray-400">Status LP:</span>
+                        <span class="text-emerald-400" data-i18n="lpStatus">80% Locked</span>
+                    </div>
+                </div>
+
+                <div class="glass-panel p-6 rounded-3xl border border-shadow-purple/40 hover:border-shadow-glow transition-all hover:-translate-y-2 relative overflow-hidden group flex flex-col justify-between">
+                    <div>
+                        <div class="w-12 h-12 rounded-2xl bg-purple-900/50 flex items-center justify-center text-pink-400 text-2xl mb-4">
+                            <i class="fa-solid fa-bullhorn"></i>
+                        </div>
+                        <span class="text-xs font-mono text-purple-300 uppercase tracking-widest" data-i18n="treasuryTitle">Treasury & Marketing</span>
+                        <h3 class="text-2xl font-display font-bold text-white my-2">10% (1.84M)</h3>
+                        <p class="text-xs text-gray-300 leading-relaxed" data-i18n="treasuryDesc">
+                            1,840,000 $XEOS allocated for marketing campaigns, airdrops, and DEX/CEX listings.
+                        </p>
+                    </div>
+                    <div class="mt-6 pt-4 border-t border-purple-900/40 flex justify-between text-xs font-mono">
+                        <span class="text-gray-400">Usage:</span>
+                        <span class="text-purple-300" data-i18n="treasuryUsage">Marketing</span>
+                    </div>
+                </div>
+
+                <div class="glass-panel p-6 rounded-3xl border border-shadow-purple/40 hover:border-shadow-glow transition-all hover:-translate-y-2 relative overflow-hidden group flex flex-col justify-between">
+                    <div>
+                        <div class="w-12 h-12 rounded-2xl bg-purple-900/50 flex items-center justify-center text-cyan-400 text-2xl mb-4">
+                            <i class="fa-solid fa-code text-cyan-400"></i>
+                        </div>
+                        <span class="text-xs font-mono text-purple-300 uppercase tracking-widest" data-i18n="devTitle">Creator / Dev</span>
+                        <h3 class="text-2xl font-display font-bold text-white my-2">10% (1.84M)</h3>
+                        <p class="text-xs text-gray-300 leading-relaxed" data-i18n="devDesc">
+                            1,840,000 $XEOS dedicated for ongoing ecosystem development and Shadow tools.
+                        </p>
+                    </div>
+                    <div class="mt-6 pt-4 border-t border-purple-900/40 flex justify-between text-xs font-mono">
+                        <span class="text-gray-400">Allocation:</span>
+                        <span class="text-cyan-300" data-i18n="devUsage">Dev & Eco</span>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <section id="buy" class="py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+            <div class="text-center space-y-4 mb-16">
+                <div class="inline-block px-3 py-1 rounded-lg bg-purple-900/40 text-shadow-glow font-mono text-xs border border-shadow-purple/40">
+                    // QUICK GUIDE
+                </div>
+                <h2 class="text-3xl sm:text-5xl font-display font-black text-white" data-i18n="buyTitle">
+                    HOW TO BUY $XEOS
+                </h2>
+                <p class="text-purple-200/70 max-w-xl mx-auto text-sm sm:text-base" data-i18n="buySubtitle">
+                    Just 4 simple steps to join the Shadow Garden.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                
+                <div class="glass-panel p-6 rounded-2xl border border-shadow-purple/30 relative flex flex-col justify-between">
+                    <div>
+                        <div class="w-10 h-10 rounded-xl bg-shadow-purple text-white font-display font-bold flex items-center justify-center text-lg mb-4 shadow-neon-purple">
+                            1
+                        </div>
+                        <h3 class="font-bold text-lg text-white mb-2" data-i18n="step1Title">Create Algorand Wallet</h3>
+                        <p class="text-xs text-gray-300 leading-relaxed" data-i18n="step1Desc">
+                            Download Pera Wallet or Defly Wallet on mobile or browser.
+                        </p>
+                    </div>
+                    <div class="mt-6 pt-4 border-t border-purple-900/30">
+                        <span class="text-[11px] font-mono text-purple-300" data-i18n="step1Tip">Recommended: Pera Wallet</span>
+                    </div>
+                </div>
+
+                <div class="glass-panel p-6 rounded-2xl border border-shadow-purple/30 relative flex flex-col justify-between">
+                    <div>
+                        <div class="w-10 h-10 rounded-xl bg-shadow-purple text-white font-display font-bold flex items-center justify-center text-lg mb-4 shadow-neon-purple">
+                            2
+                        </div>
+                        <h3 class="font-bold text-lg text-white mb-2" data-i18n="step2Title">Get ALGO</h3>
+                        <p class="text-xs text-gray-300 leading-relaxed" data-i18n="step2Desc">
+                            Buy ALGO on Binance, Coinbase or Luno and withdraw to your wallet address.
+                        </p>
+                    </div>
+                    <div class="mt-6 pt-4 border-t border-purple-900/30">
+                        <span class="text-[11px] font-mono text-purple-300" data-i18n="step2Tip">Network: Algorand</span>
+                    </div>
+                </div>
+
+                <div class="glass-panel p-6 rounded-2xl border border-shadow-purple/30 relative flex flex-col justify-between">
+                    <div>
+                        <div class="w-10 h-10 rounded-xl bg-shadow-purple text-white font-display font-bold flex items-center justify-center text-lg mb-4 shadow-neon-purple">
+                            3
+                        </div>
+                        <h3 class="font-bold text-lg text-white mb-2" data-i18n="step3Title">Opt-in $XEOS ASA</h3>
+                        <p class="text-xs text-gray-300 leading-relaxed" data-i18n="step3Desc">
+                            Add ASA ID 3672907552 in your Pera/Defly wallet to opt-in the token.
+                        </p>
+                    </div>
+                    <div class="mt-6 pt-4 border-t border-purple-900/30">
+                        <button onclick="copyASA('3672907552')" class="text-[11px] font-mono text-shadow-glow hover:underline" data-i18n="step3Btn">
+                            Copy ID: 3672907552
+                        </button>
+                    </div>
+                </div>
+
+                <div class="glass-panel p-6 rounded-2xl border border-shadow-purple/30 relative flex flex-col justify-between">
+                    <div>
+                        <div class="w-10 h-10 rounded-xl bg-shadow-purple text-white font-display font-bold flex items-center justify-center text-lg mb-4 shadow-neon-purple">
+                            4
+                        </div>
+                        <h3 class="font-bold text-lg text-white mb-2" data-i18n="step4Title">Swap on DEX</h3>
+                        <p class="text-xs text-gray-300 leading-relaxed" data-i18n="step4Desc">
+                            Connect your wallet to Vestige, Tinyman or Pact.fi and swap ALGO for $XEOS!
+                        </p>
+                    </div>
+                    <div class="mt-6 pt-4 border-t border-purple-900/30">
+                        <a href="https://vestige.fi" target="_blank" class="text-[11px] font-bold text-pink-400 hover:text-pink-300 flex items-center gap-1">
+                            <span data-i18n="step4Btn">Open Vestige DEX</span> <i class="fa-solid fa-arrow-up-right-from-square text-[9px]"></i>
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <section id="calculator" class="py-16 px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto">
+            <div class="glass-panel p-8 sm:p-10 rounded-3xl border border-shadow-purple/50 shadow-neon-glow relative overflow-hidden">
+                <div class="absolute -right-10 -bottom-10 w-40 h-40 bg-purple-600/20 rounded-full blur-3xl pointer-events-none"></div>
+
+                <div class="text-center space-y-3 mb-8">
+                    <span class="px-3 py-1 rounded-full text-xs font-mono bg-purple-950 text-shadow-glow border border-shadow-purple" data-i18n="calcBadge">SWAP SIMULATOR</span>
+                    <h2 class="text-2xl sm:text-3xl font-display font-bold text-white" data-i18n="calcTitle">
+                        $XEOS Estimate Calculator
+                    </h2>
+                    <p class="text-xs sm:text-sm text-purple-200/70" data-i18n="calcSubtitle">
+                        Calculate how many $XEOS tokens you will receive for your ALGO.
+                    </p>
+                </div>
+
+                <div class="space-y-6 max-w-md mx-auto">
+                    <div>
+                        <label class="block text-xs font-mono text-purple-200 mb-2" data-i18n="calcAlgoLabel">Your ALGO Amount:</label>
+                        <div class="relative">
+                            <input type="number" id="algoInput" value="100" min="1" class="w-full px-4 py-3 rounded-xl bg-black/60 border border-shadow-purple focus:border-shadow-glow focus:outline-none text-white font-mono text-lg pl-12 rtl:pr-12">
+                            <div class="absolute left-4 rtl:right-4 rtl:left-auto top-3.5 text-shadow-glow font-bold text-sm">
+                                Ⱥ
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex justify-center">
+                        <div class="w-8 h-8 rounded-full bg-shadow-purple/40 border border-shadow-purple flex items-center justify-center text-shadow-glow">
+                            <i class="fa-solid fa-arrow-down"></i>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-mono text-purple-200 mb-2" data-i18n="calcXeosLabel">Estimated $XEOS Received:</label>
+                        <div class="relative">
+                            <input type="text" id="xeosOutput" readonly value="10,000 $XEOS" class="w-full px-4 py-3 rounded-xl bg-purple-950/60 border border-shadow-purple text-shadow-glow font-mono text-lg font-bold">
+                        </div>
+                        <p class="text-[11px] text-gray-400 mt-2 text-right rtl:text-left" data-i18n="calcRate">*Estimated rate: 1 ALGO = 100 $XEOS</p>
+                    </div>
+
+                    <a href="https://vestige.fi" target="_blank" class="w-full block py-3.5 rounded-xl text-center font-display font-bold text-sm bg-gradient-to-r from-purple-600 via-shadow-purple to-pink-600 hover:opacity-90 text-white shadow-neon-purple transition-all" data-i18n="calcBtn">
+                        SWAP NOW ON DEX
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <section id="roadmap" class="py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto border-t border-purple-900/30">
+            <div class="text-center space-y-4 mb-16">
+                <div class="inline-block px-3 py-1 rounded-lg bg-purple-900/40 text-shadow-glow font-mono text-xs border border-shadow-purple/40">
+                    // MISSION PLAN
+                </div>
+                <h2 class="text-3xl sm:text-5xl font-display font-black text-white" data-i18n="roadTitle">
+                    ROADMAP
+                </h2>
+                <p class="text-purple-200/70 max-w-xl mx-auto text-sm sm:text-base" data-i18n="roadSubtitle">
+                    Step-by-step phases towards total crypto shadow dominance.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+                
+                <div class="glass-panel p-6 rounded-2xl border border-shadow-purple/40 relative space-y-4">
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs font-mono px-2.5 py-1 rounded bg-purple-900/80 text-shadow-glow" data-i18n="phase1Badge">PHASE 1</span>
+                        <span class="text-xs text-emerald-400 font-mono"><i class="fa-solid fa-circle-check"></i> <span data-i18n="phase1Status">Completed</span></span>
+                    </div>
+                    <h3 class="font-display font-bold text-lg text-white" data-i18n="phase1Title">Awakening</h3>
+                    <ul class="space-y-2 text-xs text-gray-300">
+                        <li class="flex items-start gap-2"><i class="fa-solid fa-check text-shadow-glow mt-0.5"></i> <span data-i18n="p1Item1">Launch ASA Token $XEOS</span></li>
+                        <li class="flex items-start gap-2"><i class="fa-solid fa-check text-shadow-glow mt-0.5"></i> <span data-i18n="p1Item2">Landing Page Launch</span></li>
+                        <li class="flex items-start gap-2"><i class="fa-solid fa-check text-shadow-glow mt-0.5"></i> <span data-i18n="p1Item3">Lock Liquidity on DEX</span></li>
+                        <li class="flex items-start gap-2"><i class="fa-solid fa-check text-shadow-glow mt-0.5"></i> <span data-i18n="p1Item4">Form X/TG Community</span></li>
+                    </ul>
+                </div>
+
+                <div class="glass-panel p-6 rounded-2xl border border-shadow-purple/40 relative space-y-4">
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs font-mono px-2.5 py-1 rounded bg-purple-900/80 text-shadow-glow" data-i18n="phase2Badge">PHASE 2</span>
+                        <span class="text-xs text-amber-400 font-mono"><i class="fa-solid fa-spinner animate-spin"></i> <span data-i18n="phase2Status">In Progress</span></span>
+                    </div>
+                    <h3 class="font-display font-bold text-lg text-white" data-i18n="phase2Title">Shadow Garden</h3>
+                    <ul class="space-y-2 text-xs text-gray-300">
+                        <li class="flex items-start gap-2"><i class="fa-solid fa-chevron-right text-shadow-glow mt-0.5"></i> <span data-i18n="p2Item1">Listing on Vestige & Tinyman</span></li>
+                        <li class="flex items-start gap-2"><i class="fa-solid fa-chevron-right text-shadow-glow mt-0.5"></i> <span data-i18n="p2Item2">Meme & Raid Campaigns</span></li>
+                        <li class="flex items-start gap-2"><i class="fa-solid fa-chevron-right text-shadow-glow mt-0.5"></i> <span data-i18n="p2Item3">CoinGecko / CMC Application</span></li>
+                        <li class="flex items-start gap-2"><i class="fa-solid fa-chevron-right text-shadow-glow mt-0.5"></i> <span data-i18n="p2Item4">First Community Airdrop</span></li>
+                    </ul>
+                </div>
+
+                <div class="glass-panel p-6 rounded-2xl border border-shadow-purple/40 relative space-y-4">
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs font-mono px-2.5 py-1 rounded bg-purple-900/80 text-shadow-glow" data-i18n="phase3Badge">PHASE 3</span>
+                        <span class="text-xs text-gray-400 font-mono" data-i18n="phase3Status">Upcoming</span>
+                    </div>
+                    <h3 class="font-display font-bold text-lg text-white" data-i18n="phase3Title">Slime Expansion</h3>
+                    <ul class="space-y-2 text-xs text-gray-300">
+                        <li class="flex items-start gap-2"><i class="fa-solid fa-circle text-[6px] text-purple-400 mt-1.5"></i> <span data-i18n="p3Item1">Launch Shadow NFT Collection</span></li>
+                        <li class="flex items-start gap-2"><i class="fa-solid fa-circle text-[6px] text-purple-400 mt-1.5"></i> <span data-i18n="p3Item2">Integrate $XEOS Staking</span></li>
+                        <li class="flex items-start gap-2"><i class="fa-solid fa-circle text-[6px] text-purple-400 mt-1.5"></i> <span data-i18n="p3Item3">Algo Ecosystem Partnerships</span></li>
+                        <li class="flex items-start gap-2"><i class="fa-solid fa-circle text-[6px] text-purple-400 mt-1.5"></i> <span data-i18n="p3Item4">5,000+ Token Holders</span></li>
+                    </ul>
+                </div>
+
+                <div class="glass-panel p-6 rounded-2xl border border-shadow-purple/40 relative space-y-4">
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs font-mono px-2.5 py-1 rounded bg-purple-900/80 text-shadow-glow" data-i18n="phase4Badge">PHASE 4</span>
+                        <span class="text-xs text-gray-400 font-mono" data-i18n="phase4Status">Upcoming</span>
+                    </div>
+                    <h3 class="font-display font-bold text-lg text-white" data-i18n="phase4Title">Atomic Blast</h3>
+                    <ul class="space-y-2 text-xs text-gray-300">
+                        <li class="flex items-start gap-2"><i class="fa-solid fa-circle text-[6px] text-purple-400 mt-1.5"></i> <span data-i18n="p4Item1">Tier-2 CEX Listings</span></li>
+                        <li class="flex items-start gap-2"><i class="fa-solid fa-circle text-[6px] text-purple-400 mt-1.5"></i> <span data-i18n="p4Item2">Telegram Shadow Bot Game</span></li>
+                        <li class="flex items-start gap-2"><i class="fa-solid fa-circle text-[6px] text-purple-400 mt-1.5"></i> <span data-i18n="p4Item3">Algorand Memecoin Dominance</span></li>
+                        <li class="flex items-start gap-2"><i class="fa-solid fa-circle text-[6px] text-purple-400 mt-1.5"></i> <span data-i18n="p4Item4">To the Moon! 🚀</span></li>
+                    </ul>
+                </div>
+
+            </div>
+        </section>
+
+        <section id="faq" class="py-20 px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto">
+            <div class="text-center space-y-4 mb-12">
+                <h2 class="text-3xl sm:text-4xl font-display font-bold text-white" data-i18n="faqTitle">
+                    FREQUENTLY ASKED QUESTIONS
+                </h2>
+                <p class="text-purple-200/70 text-sm" data-i18n="faqSubtitle">
+                    Everything you need to know about the $XEOS memecoin project.
+                </p>
+            </div>
+
+            <div class="space-y-4">
+                
+                <div class="glass-panel rounded-2xl border border-shadow-purple/30 overflow-hidden">
+                    <button class="faq-btn w-full px-6 py-5 text-left rtl:text-right font-bold text-white flex justify-between items-center focus:outline-none">
+                        <span data-i18n="faq1Q">What is Kagenou ($XEOS)?</span>
+                        <i class="fa-solid fa-chevron-down text-shadow-glow transition-transform duration-300"></i>
+                    </button>
+                    <div class="faq-content hidden px-6 pb-5 text-xs sm:text-sm text-gray-300 leading-relaxed border-t border-purple-900/30 pt-3">
+                        <p data-i18n="faq1A">
+                            Kagenou ($XEOS) is a community memecoin token built on the Algorand blockchain (ASA ID: 133742069), inspired by the anime legend Cid Kagenou.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="glass-panel rounded-2xl border border-shadow-purple/30 overflow-hidden">
+                    <button class="faq-btn w-full px-6 py-5 text-left rtl:text-right font-bold text-white flex justify-between items-center focus:outline-none">
+                        <span data-i18n="faq2Q">Why choose Algorand Blockchain?</span>
+                        <i class="fa-solid fa-chevron-down text-shadow-glow transition-transform duration-300"></i>
+                    </button>
+                    <div class="faq-content hidden px-6 pb-5 text-xs sm:text-sm text-gray-300 leading-relaxed border-t border-purple-900/30 pt-3">
+                        <p data-i18n="faq2A">
+                            Algorand offers sub-3 second transaction finality, virtually zero gas fees (&lt;$0.001), seamless native ASA standard, and zero failed transactions!
+                        </p>
+                    </div>
+                </div>
+
+                <div class="glass-panel rounded-2xl border border-shadow-purple/30 overflow-hidden">
+                    <button class="faq-btn w-full px-6 py-5 text-left rtl:text-right font-bold text-white flex justify-between items-center focus:outline-none">
+                        <span data-i18n="faq3Q">Is the Liquidity (LP) locked and safe?</span>
+                        <i class="fa-solid fa-chevron-down text-shadow-glow transition-transform duration-300"></i>
+                    </button>
+                    <div class="faq-content hidden px-6 pb-5 text-xs sm:text-sm text-gray-300 leading-relaxed border-t border-purple-900/30 pt-3">
+                        <p data-i18n="faq3A">
+                            Yes, 100% of initial DEX liquidity is locked permanently to ensure complete peace of mind for buyers.
+                        </p>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="glass-nav border-t border-shadow-purple/30 pt-16 pb-12 relative z-10 mt-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+            
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                
+                <div class="space-y-4 md:col-span-2">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-purple-900 to-pink-500 p-0.5 shadow-neon-purple">
+                            <div class="w-full h-full bg-shadow-base rounded-[10px] flex items-center justify-center font-display font-black text-white text-lg">
+                                K
+                            </div>
+                        </div>
+                        <span class="font-display font-black text-xl text-white tracking-wider">KAGENOU <span class="text-shadow-glow">$XEOS</span></span>
+                    </div>
+                    <p class="text-xs text-gray-400 max-w-sm leading-relaxed" data-i18n="footerDesc">
+                        The most powerful shadow memecoin on Algorand blockchain. Join the Shadow Garden revolution today.
+                    </p>
+                </div>
+
+                <div class="space-y-3">
+                    <h4 class="font-display text-xs font-bold uppercase tracking-widest text-shadow-glow" data-i18n="footerNavHeader">Navigation</h4>
+                    <ul class="space-y-2 text-xs text-gray-300">
+                        <li><a href="#about" class="hover:text-shadow-glow transition-colors" data-i18n="navAbout">About</a></li>
+                        <li><a href="#tokenomics" class="hover:text-shadow-glow transition-colors" data-i18n="navTokenomics">Tokenomics</a></li>
+                        <li><a href="#buy" class="hover:text-shadow-glow transition-colors" data-i18n="navBuy">How to Buy</a></li>
+                        <li><a href="#roadmap" class="hover:text-shadow-glow transition-colors" data-i18n="navRoadmap">Roadmap</a></li>
+                    </ul>
+                </div>
+
+                <div class="space-y-3">
+                    <h4 class="font-display text-xs font-bold uppercase tracking-widest text-shadow-glow" data-i18n="footerCommunityHeader">Community & DEX</h4>
+                    <div class="flex flex-wrap gap-3 pt-1">
+                        <a href="https://x.com/Dlordsociety32" target="_blank" class="w-9 h-9 rounded-xl glass-panel border border-shadow-purple/40 hover:border-shadow-glow flex items-center justify-center text-gray-300 hover:text-white transition-all">
+                            <i class="fa-brands fa-x-twitter text-sm"></i>
+                        </a>
+                        <a href="https://t.me/Dlordsociety32" target="_blank" class="w-9 h-9 rounded-xl glass-panel border border-shadow-purple/40 hover:border-shadow-glow flex items-center justify-center text-gray-300 hover:text-white transition-all">
+                            <i class="fa-brands fa-telegram text-sm"></i>
+                        </a>
+                        <a href="https://github.com/Dlordsociety32" target="_blank" class="w-9 h-9 rounded-xl glass-panel border border-shadow-purple/40 hover:border-shadow-glow flex items-center justify-center text-gray-300 hover:text-white transition-all">
+                            <i class="fa-brands fa-github text-sm"></i>
+                        </a>
+                        <a href="https://vestige.fi" target="_blank" class="w-9 h-9 rounded-xl glass-panel border border-shadow-purple/40 hover:border-shadow-glow flex items-center justify-center text-shadow-glow hover:text-white transition-all">
+                            <i class="fa-solid fa-chart-line text-sm"></i>
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="pt-8 border-t border-purple-900/30 flex flex-col md:flex-row items-center justify-between gap-4 text-[11px] text-gray-400">
+                <p class="text-center md:text-left rtl:md:text-right" data-i18n="footerDisclaimer">
+                    Disclaimer: $XEOS is a meme token for community entertainment purposes. Crypto assets carry financial risk.
+                </p>
+                <p>© 2026 Kagenou ($XEOS) Algorand ASA by <a href="https://x.com/Dlordsociety32" style="color: red; text-decoration: underline; text-decoration-color: red;"><strong>Dlordsociety32</strong></a>. All Rights Reserved.</p>
+            </div>
+
+        </div>
+    </footer>
+
+    <script>
+        const translations = {
+            en: {
+                navAbout: "About",
+                navTokenomics: "Tokenomics",
+                navBuy: "How to Buy",
+                navCalc: "Calculator",
+                navRoadmap: "Roadmap",
+                navFaq: "FAQ",
+                heroBadge: "⚡ Powered by Algorand • Instant & Nearly Zero Gas Fees",
+                heroTagline: "The ultimate Shadow memecoin token. Inspired by the legendary Cid Kagenou & built on Algorand's lightning-fast blockchain. No high gas, no failed swaps!",
+                buyBtn: "BUY $XEOS NOW",
+                atomicBtn: "ATOMIC BLAST!",
+                blockTimeLabel: "Block Time",
+                blockTimeVal: "2.8 Seconds",
+                gasFeeLabel: "Gas Fee",
+                maxSupplyLabel: "Max Supply",
+                taxLabel: "Buy/Sell Tax",
+                aboutTag: "// THE LEGEND OF KAGENOU",
+                aboutTitle: "Operate in the Shadows, Rule the Crypto World.",
+                aboutDesc: "Kagenou ($XEOS) was crafted for anime Shadow fans and the Algorand community. We built a token free from slow confirmation times, free from crazy Ethereum gas fees, backed by the best pure proof-of-stake chain.",
+                featureLp: "100% Liquidity Locked Forever",
+                featureSpeed: "Algorand Instant Sub-3s Finality",
+                featureEco: "Pure Proof of Stake & Carbon-Negative",
+                featurePposTitle: "Pure Proof-of-Stake",
+                featurePposDesc: "Forkless security powered by Algorand.",
+                featureCommTitle: "Community Owned",
+                featureCommDesc: "100% community-driven ecosystem.",
+                tokTitle: "TOKENOMICS $XEOS",
+                tokSubtitle: "Fair, transparent supply distribution of 18.4 Million tokens forged on the Algorand blockchain.",
+                maxSupplyTitle: "Max Supply",
+                maxSupplyDesc: "18.4 Million $XEOS tokens hard-capped. No future minting allowed.",
+                lpTitle: "Liquidity Pool (LP)",
+                lpDesc: "14,720,000 $XEOS added to DEX LP and locked forever for safe trading.",
+                lpStatus: "80% Locked",
+                treasuryTitle: "Treasury & Marketing",
+                treasuryDesc: "1,840,000 $XEOS allocated for marketing campaigns, airdrops, and DEX/CEX listings.",
+                treasuryUsage: "Marketing",
+                devTitle: "Creator / Dev",
+                devDesc: "1,840,000 $XEOS dedicated for ongoing ecosystem development and Shadow tools.",
+                devUsage: "Dev & Eco",
+                buyTitle: "HOW TO BUY $XEOS",
+                buySubtitle: "Just 4 simple steps to join the Shadow Garden.",
+                step1Title: "Create Algorand Wallet",
+                step1Desc: "Download Pera Wallet or Defly Wallet on mobile or browser.",
+                step1Tip: "Recommended: Pera Wallet",
+                step2Title: "Get ALGO",
+                step2Desc: "Buy ALGO on Binance, Coinbase or Luno and withdraw to your wallet address.",
+                step2Tip: "Network: Algorand",
+                step3Title: "Opt-in $XEOS ASA",
+                step3Desc: "Add ASA ID 3672907552 in your Pera/Defly wallet to opt-in the token.",
+                step3Btn: "Copy ID: 3672907552",
+                step4Title: "Swap on DEX",
+                step4Desc: "Connect your wallet to Vestige, Tinyman or Pact.fi and swap ALGO for $XEOS!",
+                step4Btn: "Open Vestige DEX",
+                calcBadge: "SWAP SIMULATOR",
+                calcTitle: "$XEOS Estimate Calculator",
+                calcSubtitle: "Calculate how many $XEOS tokens you will receive for your ALGO.",
+                calcAlgoLabel: "Your ALGO Amount:",
+                calcXeosLabel: "Estimated $XEOS Received:",
+                calcRate: "*Estimated rate: 1 ALGO = 100 $XEOS",
+                calcBtn: "SWAP NOW ON DEX",
+                roadTitle: "ROADMAP",
+                roadSubtitle: "Step-by-step phases towards total crypto shadow dominance.",
+                phase1Badge: "PHASE 1",
+                phase1Status: "Completed",
+                phase1Title: "Awakening",
+                p1Item1: "Launch ASA Token $XEOS",
+                p1Item2: "Landing Page Launch",
+                p1Item3: "Lock Liquidity on DEX",
+                p1Item4: "Form X/TG Community",
+                phase2Badge: "PHASE 2",
+                phase2Status: "In Progress",
+                phase2Title: "Shadow Garden",
+                p2Item1: "Listing on Vestige & Tinyman",
+                p2Item2: "Meme & Raid Campaigns",
+                p2Item3: "CoinGecko / CMC Application",
+                p2Item4: "First Community Airdrop",
+                phase3Badge: "PHASE 3",
+                phase3Status: "Upcoming",
+                phase3Title: "Slime Expansion",
+                p3Item1: "Launch Shadow NFT Collection",
+                p3Item2: "Integrate $XEOS Staking",
+                p3Item3: "Algo Ecosystem Partnerships",
+                p3Item4: "5,000+ Token Holders",
+                phase4Badge: "PHASE 4",
+                phase4Status: "Upcoming",
+                phase4Title: "Atomic Blast",
+                p4Item1: "Tier-2 CEX Listings",
+                p4Item2: "Telegram Shadow Bot Game",
+                p4Item3: "Algorand Memecoin Dominance",
+                p4Item4: "To the Moon! 🚀",
+                faqTitle: "FREQUENTLY ASKED QUESTIONS",
+                faqSubtitle: "Everything you need to know about the $XEOS memecoin project.",
+                faq1Q: "What is Kagenou ($XEOS)?",
+                faq1A: "Kagenou ($XEOS) is a community memecoin token built on the Algorand blockchain (ASA ID: 3672907552), inspired by the anime legend Cid Kagenou.",
+                faq2Q: "Why choose Algorand Blockchain?",
+                faq2A: "Algorand offers sub-3 second transaction finality, virtually zero gas fees (<$0.001), seamless native ASA standard, and zero failed transactions!",
+                faq3Q: "Is the Liquidity (LP) locked and safe?",
+                faq3A: "Yes, 100% of initial DEX liquidity is locked permanently to ensure complete peace of mind for buyers.",
+                footerDesc: "The most powerful shadow memecoin on Algorand blockchain. Join the Shadow Garden revolution today.",
+                footerNavHeader: "Navigation",
+                footerCommunityHeader: "Community & DEX",
+                footerDisclaimer: "Disclaimer: $XEOS is a meme token for community entertainment purposes. Crypto assets carry financial risk.",
+                toastCopiedTitle: "ASA ID Copied!",
+                toastCopiedMsg: "ID: 3672907552 ready for Pera Wallet.",
+                toastAtomicTitle: "I AM ATOMIC!",
+                toastAtomicMsg: "Shadow Kagenou Power Activated!"
+            },
+            ms: {
+                navAbout: "Mengenai",
+                navTokenomics: "Tokenomics",
+                navBuy: "Cara Beli",
+                navCalc: "Kalkulator",
+                navRoadmap: "Hala Tuju",
+                navFaq: "Soalan Lazim",
+                heroBadge: "⚡ Rangkaian Algorand • Pantas & Yuran Hampir RM0",
+                heroTagline: "Token memecoin jawapan kepada kegelapan. Dikuasai oleh watak legenda Cid Kagenou & rangkaian ultra pantas Algorand. Tanpa yuran mahal, tanpa kegagalan transaksi!",
+                buyBtn: "BELI $XEOS SEKARANG",
+                atomicBtn: "LETUPAN ATOMIC!",
+                blockTimeLabel: "Masa Blok",
+                blockTimeVal: "2.8 Saat",
+                gasFeeLabel: "Yuran Gas",
+                maxSupplyLabel: "Bekalan Maksima",
+                taxLabel: "Cukai Beli/Jual",
+                aboutTag: "// LEGENDA KAGENOU",
+                aboutTitle: "Bergerak Dalam Bayang, Menguasai Pasaran Crypto.",
+                aboutDesc: "Kagenou ($XEOS) dicipta bagi peminat anime Eminence in Shadow dan komuniti Algorand. Kami membina token tanpa kelajuan terhambat, tanpa yuran gas Ethereum yang gila, dan disokong oleh ekosistem Algorand yang terunggul.",
+                featureLp: "Kunci Cecair (LP Locked) 100% Selamanya",
+                featureSpeed: "Pencapaian Blok Sub-3 Saat Algorand",
+                featureEco: "Mesra Alam & Karbon-Negatif",
+                featurePposTitle: "Pure Proof-of-Stake",
+                featurePposDesc: "Tiada fork, keselamatan maksima Algorand.",
+                featureCommTitle: "Hak Milik Komuniti",
+                featureCommDesc: "100% ekosistem milik komuniti.",
+                tokTitle: "TOKENOMICS $XEOS",
+                tokSubtitle: "Pengagihan bekalan 18.4 Juta token yang adil, telus dan dipahat pada blockchain Algorand.",
+                maxSupplyTitle: "Bekalan Maksima",
+                maxSupplyDesc: "18.4 Juta token $XEOS dimint secara tetap. Tiada cetakan tambahan dibenarkan.",
+                lpTitle: "Kolam Cecair (LP)",
+                lpDesc: "14,720,000 $XEOS dimasuk ke DEX LP dan dikunci selamanya untuk keselamatan dagangan.",
+                lpStatus: "80% Dikunci",
+                treasuryTitle: "Treasury & Pemasaran",
+                treasuryDesc: "1,840,000 $XEOS diperuntukkan untuk airdrop, promosi komuniti & listing DEX/CEX.",
+                treasuryUsage: "Pemasaran",
+                devTitle: "Pencipta / Dev",
+                devDesc: "1,840,000 $XEOS khas untuk pembangunan ekosistem berterusan, bot & projek Shadow.",
+                devUsage: "Dev & Eco",
+                buyTitle: "CARA MEMBELI $XEOS",
+                buySubtitle: "Hanya 4 langkah mudah untuk menjadi sebahagian daripada Shadow Garden.",
+                step1Title: "Cipta Dompet Algorand",
+                step1Desc: "Muat turun Pera Wallet atau Defly Wallet dari App Store atau Google Play.",
+                step1Tip: "Disyorkan: Pera Wallet",
+                step2Title: "Dapatkan ALGO",
+                step2Desc: "Beli ALGO di Binance, Luno, OKX atau Kraken dan hantar ke dompet anda.",
+                step2Tip: "Rangkaian: Algorand",
+                step3Title: "Opt-in ASA $XEOS",
+                step3Desc: "Tambah ASA ID 3672907552 dalam dompet Pera/Defly anda untuk membolehkan penerimaan token.",
+                step3Btn: "Salin ID: 3672907552",
+                step4Title: "Swap di DEX",
+                step4Desc: "Sambungkan dompet anda ke Vestige, Tinyman atau Pact.fi, tukar ALGO kepada $XEOS!",
+                step4Btn: "Buka Vestige DEX",
+                calcBadge: "SIMULATOR SWAP",
+                calcTitle: "Kalkulator Anggaran $XEOS",
+                calcSubtitle: "Kira berapa banyak token $XEOS yang anda dapat berdasarkan kuantiti ALGO.",
+                calcAlgoLabel: "Jumlah ALGO Anda:",
+                calcXeosLabel: "Anggaran $XEOS Diterima:",
+                calcRate: "*Kadar anggaran: 1 ALGO = 100 $XEOS",
+                calcBtn: "SWAP SEKARANG DI DEX",
+                roadTitle: "PELAN HALA TUJU",
+                roadSubtitle: "Langkah demi langkah ke arah penguasaan alam bayang crypto.",
+                phase1Badge: "FASA 1",
+                phase1Status: "Selesai",
+                phase1Title: "Awakening",
+                p1Item1: "Pelancaran Token ASA $XEOS",
+                p1Item2: "Pelancaran Landing Page",
+                p1Item3: "Kunci Liquidity di DEX",
+                p1Item4: "Pembentukan Komuniti X/TG",
+                phase2Badge: "FASA 2",
+                phase2Status: "Dalam Progres",
+                phase2Title: "Shadow Garden",
+                p2Item1: "Listing di Vestige & Tinyman",
+                p2Item2: "Kempen Meme & Raids",
+                p2Item3: "Permohonan CoinGecko / CMC",
+                p2Item4: "Airdrop Komuniti Pertama",
+                phase3Badge: "FASA 3",
+                phase3Status: "Akan Datang",
+                phase3Title: "Slime Expansion",
+                p3Item1: "Pelancaran Koleksi Shadow NFT",
+                p3Item2: "Integrasi Staking $XEOS",
+                p3Item3: "Rakan Kongsi Ekosistem Algo",
+                p3Item4: "5,000+ Pemegang Token",
+                phase4Badge: "FASA 4",
+                phase4Status: "Akan Datang",
+                phase4Title: "Atomic Blast",
+                p4Item1: "Listing CEX Tier-2",
+                p4Item2: "Permainan Bot Telegram Shadow",
+                p4Item3: "Dominasi Memecoin Algorand",
+                p4Item4: "Ke Bulan! 🚀",
+                faqTitle: "SOALAN LAZIM (FAQ)",
+                faqSubtitle: "Segala maklumat penting yang perlu anda ketahui tentang $XEOS.",
+                faq1Q: "Apakah itu Kagenou ($XEOS)?",
+                faq1A: "Kagenou ($XEOS) ialah token memecoin komuniti yang dibina di atas blockchain Algorand (ASA ID: 3672907552), terinspirasi daripada legenda anime Shadow Kagenou.",
+                faq2Q: "Mengapa menggunakan Blockchain Algorand?",
+                faq2A: "Algorand menawarkan kelajuan transaksi di bawah 3 saat, yuran gas tidak sampai RM0.01, penciptaan ASA mesra pengguna dan sifar kegagalan transaksi!",
+                faq3Q: "Adakah cecair (LP) selamat dan dikunci?",
+                faq3A: "Ya, 100% token cecair di Tinyman / Pact DEX telah dikunci selamanya. Tiada pembatalan rugpull dibenarkan.",
+                footerDesc: "Token memecoin bayang paling berkuasa di rangkaian Algorand. Sertai revolusi Shadow Garden hari ini.",
+                footerNavHeader: "Navigasi",
+                footerCommunityHeader: "Komuniti & DEX",
+                footerDisclaimer: "Penafian: $XEOS ialah memecoin untuk hiburan komuniti semata-mata. Aset kripto berisiko tinggi.",
+                toastCopiedTitle: "ASA ID Disalin!",
+                toastCopiedMsg: "ID: 3672907552 sedia diguna di Pera Wallet.",
+                toastAtomicTitle: "I AM ATOMIC!",
+                toastAtomicMsg: "Kuasa Shadow Kagenou Telah Diaktifkan!"
+            },
+            id: {
+                navAbout: "Tentang",
+                navTokenomics: "Tokenomik",
+                navBuy: "Cara Beli",
+                navCalc: "Kalkulator",
+                navRoadmap: "Peta Jalan",
+                navFaq: "FAQ",
+                heroBadge: "⚡ Jaringan Algorand • Cepat & Biaya Mendekati Rp0",
+                heroTagline: "Token memecoin bayangan terhebat. Terinspirasi oleh Cid Kagenou legendaris & dibangun di atas blockchain Algorand yang super cepat. Tanpa gas mahal, tanpa transaksi gagal!",
+                buyBtn: "BELI $XEOS SEKARANG",
+                atomicBtn: "LEDAKAN ATOMIC!",
+                blockTimeLabel: "Waktu Blok",
+                blockTimeVal: "2.8 Detik",
+                gasFeeLabel: "Biaya Gas",
+                maxSupplyLabel: "Pasokan Maks",
+                taxLabel: "Pajak Beli/Jual",
+                aboutTag: "// LEGENDA KAGENOU",
+                aboutTitle: "Bergerak Dalam Bayangan, Kuasai Dunia Kripto.",
+                aboutDesc: "Kagenou ($XEOS) diciptakan untuk penggemar anime Shadow dan komunitas Algorand. Kami membangun token tanpa konfirmasi lambat, tanpa biaya gas Ethereum yang gila.",
+                featureLp: "100% Likuiditas Terkunci Selamanya",
+                featureSpeed: "Finalitas Sub-3 Detik Algorand",
+                featureEco: "Ramah Lingkungan & Karbon-Negatif",
+                featurePposTitle: "Pure Proof-of-Stake",
+                featurePposDesc: "Keamanan tanpa fork oleh Algorand.",
+                featureCommTitle: "Milik Komunitas",
+                featureCommDesc: "100% ekosistem milik komunitas.",
+                tokTitle: "TOKENOMIK $XEOS",
+                tokSubtitle: "Distribusi pasokan 18.4 Juta token yang adil dan transparan di blockchain Algorand.",
+                maxSupplyTitle: "Pasokan Maksimal",
+                maxSupplyDesc: "18.4 Juta token $XEOS dibatasi secara permanen. Tidak ada cetak ulang.",
+                lpTitle: "Kolam Likuiditas (LP)",
+                lpDesc: "14.720.000 $XEOS dimasukkan ke DEX LP dan dikunci selamanya.",
+                lpStatus: "80% Terkunci",
+                treasuryTitle: "Kas & Pemasaran",
+                treasuryDesc: "1.840.000 $XEOS dialokasikan untuk pemasaran, airdrop, dan listing.",
+                treasuryUsage: "Pemasaran",
+                devTitle: "Pencipta / Dev",
+                devDesc: "1.840.000 $XEOS didedikasikan untuk pengembangan ekosistem.",
+                devUsage: "Dev & Eko",
+                buyTitle: "CARA MEMBELI $XEOS",
+                buySubtitle: "Hanya 4 langkah mudah untuk bergabung dengan Shadow Garden.",
+                step1Title: "Buat Dompet Algorand",
+                step1Desc: "Unduh Pera Wallet atau Defly Wallet di ponsel.",
+                step1Tip: "Rekomendasi: Pera Wallet",
+                step2Title: "Dapatkan ALGO",
+                step2Desc: "Beli ALGO di Binance, Indodax, atau Tokocrypto lalu kirim ke dompet Anda.",
+                step2Tip: "Jaringan: Algorand",
+                step3Title: "Opt-in ASA $XEOS",
+                step3Desc: "Tambahkan ASA ID 133742069 di dompet Pera/Defly Anda.",
+                step3Btn: "Salin ID: 133742069",
+                step4Title: "Tukar di DEX",
+                step4Desc: "Hubungkan dompet Anda ke Vestige atau Tinyman dan tukar ALGO ke $XEOS!",
+                step4Btn: "Buka Vestige DEX",
+                calcBadge: "SIMULATOR TUKAR",
+                calcTitle: "Kalkulator Estimasi $XEOS",
+                calcSubtitle: "Hitung berapa banyak token $XEOS yang akan Anda terima.",
+                calcAlgoLabel: "Jumlah ALGO Anda:",
+                calcXeosLabel: "Estimasi $XEOS Diterima:",
+                calcRate: "*Kadar estimasi: 1 ALGO = 100 $XEOS",
+                calcBtn: "TUKAR SEKARANG DI DEX",
+                roadTitle: "PETA JALAN",
+                roadSubtitle: "Langkah demi langkah menuju dominasi kripto di alam bayangan.",
+                phase1Badge: "FASE 1",
+                phase1Status: "Selesai",
+                phase1Title: "Awakening",
+                p1Item1: "Peluncuran Token ASA $XEOS",
+                p1Item2: "Peluncuran Landing Page",
+                p1Item3: "Kunci Likuiditas di DEX",
+                p1Item4: "Pembentukan Komunitas X/TG",
+                phase2Badge: "FASE 2",
+                phase2Status: "Dalam Proses",
+                phase2Title: "Shadow Garden",
+                p2Item1: "Listing di Vestige & Tinyman",
+                p2Item2: "Kampanye Meme & Raids",
+                p2Item3: "Aplikasi CoinGecko / CMC",
+                p2Item4: "Airdrop Komunitas Pertama",
+                phase3Badge: "FASE 3",
+                phase3Status: "Mendatang",
+                phase3Title: "Slime Expansion",
+                p3Item1: "Peluncuran NFT Shadow",
+                p3Item2: "Integrasi Staking $XEOS",
+                p3Item3: "Kemitraan Ekosistem Algo",
+                p3Item4: "5.000+ Pemegang Token",
+                phase4Badge: "FASE 4",
+                phase4Status: "Mendatang",
+                phase4Title: "Atomic Blast",
+                p4Item1: "Listing CEX Tier-2",
+                p4Item2: "Game Bot Telegram Shadow",
+                p4Item3: "Dominasi Memecoin Algorand",
+                p4Item4: "Ke Bulan! 🚀",
+                faqTitle: "PERTANYAAN SERING DIAJUKAN",
+                faqSubtitle: "Semua yang perlu Anda ketahui tentang proyek memecoin $XEOS.",
+                faq1Q: "Apa itu Kagenou ($XEOS)?",
+                faq1A: "Kagenou ($XEOS) adalah token memecoin komunitas yang dibangun di blockchain Algorand (ASA ID: 3672907552).",
+                faq2Q: "Mengapa memilih Blockchain Algorand?",
+                faq2A: "Algorand menawarkan finalitas transaksi di bawah 3 detik, biaya gas nol, dan tanpa kegagalan transaksi!",
+                faq3Q: "Apakah Likuiditas (LP) aman dan terkunci?",
+                faq3A: "Ya, 100% likuiditas awal DEX telah dikunci secara permanen.",
+                footerDesc: "Token memecoin bayangan paling berdaya di Algorand. Bergabunglah hari ini.",
+                footerNavHeader: "Navigasi",
+                footerCommunityHeader: "Komunitas & DEX",
+                footerDisclaimer: "Penafian: $XEOS adalah token memecoin hiburan semata.",
+                toastCopiedTitle: "ASA ID Disalin!",
+                toastCopiedMsg: "ID: 3672907552 siap di Pera Wallet.",
+                toastAtomicTitle: "I AM ATOMIC!",
+                toastAtomicMsg: "Kekuatan Shadow Kagenou Telah Diaktifkan!"
+            },
+            ja: {
+                navAbout: "概要",
+                navTokenomics: "トークノミクス",
+                navBuy: "購入方法",
+                navCalc: "計算機",
+                navRoadmap: "ロードマップ",
+                navFaq: "よくある質問",
+                heroBadge: "⚡ Algorandネットワーク • 超高速＆ガス代ほぼ￥0",
+                heroTagline: "影から生まれし究極のミームコイン。伝説のシード・カゲノーとAlgorand高速ブロックチェーンの融合。遅延なし、高いガス代なし！",
+                buyBtn: "今すぐ $XEOS を購入",
+                atomicBtn: "アトミック・ブラスト！",
+                blockTimeLabel: "ブロック生成",
+                blockTimeVal: "2.8 秒",
+                gasFeeLabel: "ガス代",
+                maxSupplyLabel: "最大供給量",
+                taxLabel: "売買手数料",
+                aboutTag: "// カゲノーの伝説",
+                aboutTitle: "影に潜み、暗号資産の世界を支配する。",
+                aboutDesc: "Kagenou ($XEOS) は陰の実力者ファンとAlgorandコミュニティのために誕生しました。遅いトランザクションや高額なEthereumガス代のない完璧な体験を提供します。",
+                featureLp: "流動性(LP)100%永久ロック",
+                featureSpeed: "3秒未満の超高速確定",
+                featureEco: "環境に優しくカーボンネガティブ",
+                featurePposTitle: "Pure Proof-of-Stake",
+                featurePposDesc: "Algorandによるフォークレスセキュリティ",
+                featureCommTitle: "コミュニティ主導",
+                featureCommDesc: "100%コミュニティ所有の生態系",
+                tokTitle: "トークノミクス $XEOS",
+                tokSubtitle: "Algorand上で発行された1,840万トークンの公平で透明な分配。",
+                maxSupplyTitle: "最大供給量",
+                maxSupplyDesc: "1,840万 $XEOS トークン上限。追加発行なし。",
+                lpTitle: "流動性プール (LP)",
+                lpDesc: "1,472万 $XEOS をDEX LPに追加し、永久ロック。",
+                lpStatus: "80% ロック済み",
+                treasuryTitle: "トレジャリー＆マーケ",
+                treasuryDesc: "184万 $XEOS をプロモーションや上場用に割り当て。",
+                treasuryUsage: "マーケティング",
+                devTitle: "開発者 / Dev",
+                devDesc: "184万 $XEOS をエコシステム開発用に確保。",
+                devUsage: "開発＆エコシステム",
+                buyTitle: "$XEOS の購入方法",
+                buySubtitle: "シャドウガーデンに参加するための簡単な4ステップ。",
+                step1Title: "Algorandウォレットを作成",
+                step1Desc: "Pera Wallet または Defly Wallet をダウンロード。",
+                step1Tip: "推奨: Pera Wallet",
+                step2Title: "ALGOを入手",
+                step2Desc: "Binanceや各種取引所でALGOを購入し送金。",
+                step2Tip: "ネットワーク: Algorand",
+                step3Title: "ASA $XEOS をオプトイン",
+                step3Desc: "ウォレットで ASA ID 3672907552 を追加。",
+                step3Btn: "IDをコピー: 3672907552",
+                step4Title: "DEXでスワップ",
+                step4Desc: "VestigeやTinymanに接続し、ALGOを $XEOS に交換！",
+                step4Btn: "Vestige DEXを開く",
+                calcBadge: "スワップシミュレーター",
+                calcTitle: "$XEOS 見積もり計算機",
+                calcSubtitle: "保有するALGOで受け取れる $XEOS 量を計算。",
+                calcAlgoLabel: "ALGO数量:",
+                calcXeosLabel: "推定 $XEOS 獲得量:",
+                calcRate: "*推定レート: 1 ALGO = 100 $XEOS",
+                calcBtn: "DEXで今すぐスワップ",
+                roadTitle: "ロードマップ",
+                roadSubtitle: "暗号世界の陰の支配に向けたステップ・バイ・ステップ。",
+                phase1Badge: "フェーズ 1",
+                phase1Status: "完了",
+                phase1Title: "覚醒 (Awakening)",
+                p1Item1: "ASAトークン $XEOS 発行",
+                p1Item2: "ランディングページ公開",
+                p1Item3: "DEX流動性のロック",
+                p1Item4: "X / TG コミュニティ開設",
+                phase2Badge: "フェーズ 2",
+                phase2Status: "進行中",
+                phase2Title: "陰の庭園 (Shadow Garden)",
+                p2Item1: "Vestige & Tinyman 上場",
+                p2Item2: "ミーム＆レイドキャンペーン",
+                p2Item3: "CoinGecko / CMC 申請",
+                p2Item4: "第1回コミュニティエアドロップ",
+                phase3Badge: "フェーズ 3",
+                phase3Status: "近日公開",
+                phase3Title: "スライム拡張",
+                p3Item1: "Shadow NFT コレクション公開",
+                p3Item2: "$XEOS ステーキング導入",
+                p3Item3: "Algorandエコシステム提携",
+                p3Item4: "ホルダー5,000人突破",
+                phase4Badge: "フェーズ 4",
+                phase4Status: "近日公開",
+                phase4Title: "アトミック・ブラスト",
+                p4Item1: "Tier-2 CEX 上場",
+                p4Item2: "Telegram Shadow ボットゲーム",
+                p4Item3: "Algorandミームコインの頂点へ",
+                p4Item4: "月へ到達！ 🚀",
+                faqTitle: "よくある質問 (FAQ)",
+                faqSubtitle: "$XEOS ミームコインに関する重要情報。",
+                faq1Q: "Kagenou ($XEOS) とは何ですか？",
+                faq1A: "Kagenou ($XEOS) はAlgorand (ASA ID: 3672907552) 上のコミュニティミームコインです。",
+                faq2Q: "なぜAlgorandなのですか？",
+                faq2A: "Algorandは3秒未満の確定速度、実質ゼロのガス代（<$0.001）を提供します！",
+                faq3Q: "流動性は安全にロックされていますか？",
+                faq3A: "はい、初期DEX流動性の100%が永久にロックされています。",
+                footerDesc: "Algorandで最も強力な陰のミームコイン。今すぐ参加しよう。",
+                footerNavHeader: "ナビゲーション",
+                footerCommunityHeader: "コミュニティ & DEX",
+                footerDisclaimer: "免責事項: $XEOS は娯楽目的のミームトークンです。",
+                toastCopiedTitle: "ASA IDをコピーしました！",
+                toastCopiedMsg: "ID: 3672907552 (Pera Wallet準備完了)",
+                toastAtomicTitle: "アイ・アム・アトミック！",
+                toastAtomicMsg: "シャドウカゲノーの力が発動しました！"
+            },
+            ko: {
+                navAbout: "소개",
+                navTokenomics: "토크노믹스",
+                navBuy: "구매 방법",
+                navCalc: "계산기",
+                navRoadmap: "로드맵",
+                navFaq: "자주 묻는 질문",
+                heroBadge: "⚡ Algorand 네트워크 • 초고속 & 가스비 거의 0원",
+                heroTagline: "어둠 속에서 탄생한 궁극의 밈코인. 전설적인 시드 카게노와 초고속 Algorand 블록체인의 결합. 높은 가스비와 거래 실패 없음!",
+                buyBtn: "지금 $XEOS 구매하기",
+                atomicBtn: "어토믹 블래스트!",
+                blockTimeLabel: "블록 생성 시간",
+                blockTimeVal: "2.8 초",
+                gasFeeLabel: "가스비",
+                maxSupplyLabel: "최대 공급량",
+                taxLabel: "매수/매도 세금",
+                aboutTag: "// 카게노의 전설",
+                aboutTitle: "어둠 속에서 행동하고, 크립토 세계를 지배하라.",
+                aboutDesc: "Kagenou ($XEOS)는 어둠의 실력자 팬들과 Algorand 커뮤니티를 위해 제작되었습니다. 느린 수락 시간과 비싼 가스비 없는 완벽한 환경을 제공합니다.",
+                featureLp: "유동성(LP) 100% 영구 잠금",
+                featureSpeed: "3초 미만 초고속 최종성",
+                featureEco: "친환경 & 탄소 음성 블록체인",
+                featurePposTitle: "Pure Proof-of-Stake",
+                featurePposDesc: "Algorand 기반의 포크 없는 보안",
+                featureCommTitle: "커뮤니티 소유",
+                featureCommDesc: "100% 커뮤니티 주도 생태계",
+                tokTitle: "토크노믹스 $XEOS",
+                tokSubtitle: "Algorand 블록체인에서 단조된 1,840만 토큰의 공정하고 투명한 분배.",
+                maxSupplyTitle: "최대 공급량",
+                maxSupplyDesc: "1,840만 $XEOS 토큰 고정. 추가 발행 없음.",
+                lpTitle: "유동성 풀 (LP)",
+                lpDesc: "1,472만 $XEOS 토큰을 DEX LP에 공급하고 영구 잠금.",
+                lpStatus: "80% 잠금 완료",
+                treasuryTitle: "마케팅 & 국고",
+                treasuryDesc: "184만 $XEOS 토큰을 마케팅, 에어드랍, 상장용으로 배정.",
+                treasuryUsage: "마케팅",
+                devTitle: "개발자 / Dev",
+                devDesc: "184만 $XEOS 토큰을 지속적인 생태계 개발용으로 배정.",
+                devUsage: "개발 & 생태계",
+                buyTitle: "$XEOS 구매 방법",
+                buySubtitle: "섀도우 가든에 합류하기 위한 간단한 4단계.",
+                step1Title: "Algorand 지갑 생성",
+                step1Desc: "Pera Wallet 또는 Defly Wallet을 다운로드하세요.",
+                step1Tip: "추천: Pera Wallet",
+                step2Title: "ALGO 구매",
+                step2Desc: "바이낸스, 업비트 등에서 ALGO를 구매하여 지갑으로 전송하세요.",
+                step2Tip: "네트워크: Algorand",
+                step3Title: "ASA $XEOS 옵트인",
+                step3Desc: "지갑에서 ASA ID 3672907552를 추가(옵트인)하세요.",
+                step3Btn: "ID 복사: 3672907552",
+                step4Title: "DEX에서 스왑",
+                step4Desc: "Vestige, Tinyman에 지갑을 연결하고 ALGO를 $XEOS로 스왑하세요!",
+                step4Btn: "Vestige DEX 열기",
+                calcBadge: "스왑 시뮬레이터",
+                calcTitle: "$XEOS 예상 계산기",
+                calcSubtitle: "보유한 ALGO로 받을 수 있는 $XEOS 토큰 양을 계산하세요.",
+                calcAlgoLabel: "ALGO 수량:",
+                calcXeosLabel: "예상 수령 $XEOS:",
+                calcRate: "*예상 비율: 1 ALGO = 100 $XEOS",
+                calcBtn: "DEX에서 지금 스왑하기",
+                roadTitle: "로드맵",
+                roadSubtitle: "크립토 어둠의 지배를 향한 단계별 계획.",
+                phase1Badge: "1 단계",
+                phase1Status: "완료",
+                phase1Title: "각성 (Awakening)",
+                p1Item1: "ASA 토큰 $XEOS 출시",
+                p1Item2: "랜딩 페이지 출시",
+                p1Item3: "DEX 유동성 잠금",
+                p1Item4: "X / TG 커뮤니티 생성",
+                phase2Badge: "2 단계",
+                phase2Status: "진행 중",
+                phase2Title: "섀도우 가든",
+                p2Item1: "Vestige & Tinyman 상장",
+                p2Item2: "밈 & 레이드 캠페인",
+                p2Item3: "CoinGecko / CMC 신청",
+                p2Item4: "첫 커뮤니티 에어드랍",
+                phase3Badge: "3 단계",
+                phase3Status: "예정됨",
+                phase3Title: "슬라임 확장",
+                p3Item1: "Shadow NFT 컬렉션 출시",
+                p3Item2: "$XEOS 스테이킹 도입",
+                p3Item3: "Algorand 생태계 파트너십",
+                p3Item4: "홀더 5,000명 달성",
+                phase4Badge: "4 단계",
+                phase4Status: "예정됨",
+                phase4Title: "어토믹 블래스트",
+                p4Item1: "Tier-2 CEX 상장",
+                p4Item2: "Telegram Shadow 봇 게임",
+                p4Item3: "Algorand 밈코인 점유율 1위",
+                p4Item4: "달까지 가자! 🚀",
+                faqTitle: "자주 묻는 질문 (FAQ)",
+                faqSubtitle: "$XEOS 밈코인 프로젝트에 대한 핵심 정보.",
+                faq1Q: "Kagenou ($XEOS)는 무엇인가요?",
+                faq1A: "Kagenou ($XEOS)는 Algorand 블록체인(ASA ID: 3672907552) 기반의 커뮤니티 밈코인입니다.",
+                faq2Q: "왜 Algorand 블록체인인가요?",
+                faq2A: "Algorand는 3초 미만의 최종성, 0원에 가까운 가스비를 제공합니다!",
+                faq3Q: "유동성은 안전하게 잠겨 있나요?",
+                faq3A: "네, 초기 DEX 유동성의 100%가 영구적으로 잠겨 있습니다.",
+                footerDesc: "Algorand에서 가장 강력한 어둠의 밈코인. 지금 합류하세요.",
+                footerNavHeader: "네비게이션",
+                footerCommunityHeader: "커뮤니티 & DEX",
+                footerDisclaimer: "면책 조항: $XEOS는 오락용 밈 토큰입니다.",
+                toastCopiedTitle: "ASA ID 복사 완료!",
+                toastCopiedMsg: "ID: 3672907552 (Pera Wallet 준비 완료)",
+                toastAtomicTitle: "아이 엠 어토믹!",
+                toastAtomicMsg: "섀도우 카게노의 힘이 활성화되었습니다!"
+            },
+            zh: {
+                navAbout: "关于",
+                navTokenomics: "代币经济",
+                navBuy: "如何购买",
+                navCalc: "计算器",
+                navRoadmap: "路线图",
+                navFaq: "常见问题",
+                heroBadge: "⚡ Algorand 网络 • 超高速 & 近乎 0 Gas 费",
+                heroTagline: "来自阴影中的终极 Meme 币。受传奇人物席德·卡盖诺启发，基于超高速 Algorand 区块链构建。无高额 Gas 费，无失败交易！",
+                buyBtn: "立即购买 $XEOS",
+                atomicBtn: "Atomic 爆裂！",
+                blockTimeLabel: "出块时间",
+                blockTimeVal: "2.8 秒",
+                gasFeeLabel: "Gas 费用",
+                maxSupplyLabel: "最大供应量",
+                taxLabel: "买/卖税率",
+                aboutTag: "// 卡盖诺的传奇",
+                aboutTitle: "隐于阴影，主宰加密世界。",
+                aboutDesc: "Kagenou ($XEOS) 专为《想要成为影之实力者》粉丝和 Algorand 社区打造。没有缓慢的确认，没有昂贵的 Ethereum Gas 费。",
+                featureLp: "流动性 (LP) 100% 永久锁定",
+                featureSpeed: "Algorand 3 秒内即时确认",
+                featureEco: "纯净 POS 机制 & 碳负性",
+                featurePposTitle: "Pure Proof-of-Stake",
+                featurePposDesc: "Algorand 驱动的无分叉安全机制",
+                featureCommTitle: "社区完全所有",
+                featureCommDesc: "100% 社区驱动生态",
+                tokTitle: "代币经济学 $XEOS",
+                tokSubtitle: "在 Algorand 区块链上铸造的 1840 万代币公平透明分配。",
+                maxSupplyTitle: "最大供应量",
+                maxSupplyDesc: "1840 万 $XEOS 硬顶，绝不再增发。",
+                lpTitle: "流动性池 (LP)",
+                lpDesc: "14,720,000 $XEOS 注入 DEX LP 并永久锁定。",
+                lpStatus: "80% 已锁定",
+                treasuryTitle: "国库 & 营销",
+                treasuryDesc: "1,840,000 $XEOS 分配于营销推广、空投及交易所上线。",
+                treasuryUsage: "营销",
+                devTitle: "开发者 / Dev",
+                devDesc: "1,840,000 $XEOS 用于生态系统持续开发和阴影工具。",
+                devUsage: "开发与生态",
+                buyTitle: "如何购买 $XEOS",
+                buySubtitle: "只需 4 个简单步骤即可加入阴影庭院。",
+                step1Title: "创建 Algorand 钱包",
+                step1Desc: "下载 Pera Wallet 或 Defly Wallet。",
+                step1Tip: "推荐：Pera Wallet",
+                step2Title: "获取 ALGO",
+                step2Desc: "在 币安、OKX 购买 ALGO 并提取到您的钱包。",
+                step2Tip: "网络：Algorand",
+                step3Title: "添加 $XEOS ASA 资产",
+                step3Desc: "在钱包中添加 ASA ID 3672907552 即可接收代币。",
+                step3Btn: "复制 ID: 3672907552",
+                step4Title: "在 DEX 兑换",
+                step4Desc: "连接钱包至 Vestige 或 Tinyman，将 ALGO 兑换为 $XEOS！",
+                step4Btn: "打开 Vestige DEX",
+                calcBadge: "兑换模拟器",
+                calcTitle: "$XEOS 估算计算器",
+                calcSubtitle: "计算您的 ALGO 可兑换多少 $XEOS 代币。",
+                calcAlgoLabel: "您的 ALGO 数量：",
+                calcXeosLabel: "预计收到 $XEOS：",
+                calcRate: "*预计汇率：1 ALGO = 100 $XEOS",
+                calcBtn: "立即在 DEX 兑换",
+                roadTitle: "路线图",
+                roadSubtitle: "步步为营，走向暗影加密霸主地位。",
+                phase1Badge: "阶段 1",
+                phase1Status: "已完成",
+                phase1Title: "觉醒 (Awakening)",
+                p1Item1: "发行 ASA 代币 $XEOS",
+                p1Item2: "上线官方 Landing Page",
+                p1Item3: "锁定 DEX 流动性",
+                p1Item4: "建立 X/TG 社群",
+                phase2Badge: "阶段 2",
+                phase2Status: "进行中",
+                phase2Title: "阴影庭院",
+                p2Item1: "上线 Vestige 与 Tinyman",
+                p2Item2: "Meme 与 Raid 宣传",
+                p2Item3: "申请 CoinGecko / CMC",
+                p2Item4: "首次社区空投",
+                phase3Badge: "阶段 3",
+                phase3Status: "即将到来",
+                phase3Title: "史莱姆扩张",
+                p3Item1: "发布 Shadow NFT 系列",
+                p3Item2: "集成 $XEOS 质押功能",
+                p3Item3: "Algorand 生态伙伴合作",
+                p3Item4: "持币地址突破 5,000",
+                phase4Badge: "阶段 4",
+                phase4Status: "即将到来",
+                phase4Title: "Atomic 爆裂",
+                p4Item1: "上线 Tier-2 CEX 交易所",
+                p4Item2: "Telegram Shadow 机器人游戏",
+                p4Item3: "Algorand Meme 币霸主",
+                p4Item4: "冲向月球！ 🚀",
+                faqTitle: "常见问题 (FAQ)",
+                faqSubtitle: "关于 $XEOS 项目您需要了解的一切。",
+                faq1Q: "什么是 Kagenou ($XEOS)？",
+                faq1A: "Kagenou ($XEOS) 是基于 Algorand 区块链 (ASA ID: 3672907552) 构建的社区 Meme 代币。",
+                faq2Q: "为什么选择 Algorand 区块链？",
+                faq2A: "Algorand 提供 3 秒以内的最终确认、近乎为零的 Gas 费以及零交易失败！",
+                faq3Q: "流动性 (LP) 安全并锁定了吗？",
+                faq3A: "是的，100% 的 DEX 初始流动性均已永久锁定。",
+                footerDesc: "Algorand 上最强大的阴影 Meme 币。立即加入。",
+                footerNavHeader: "导航",
+                footerCommunityHeader: "社区与 DEX",
+                footerDisclaimer: "免责声明：$XEOS 仅为娱乐目的的 Meme 代币。",
+                toastCopiedTitle: "ASA ID 已复制！",
+                toastCopiedMsg: "ID: 3672907552 已准备好在 Pera Wallet 中使用。",
+                toastAtomicTitle: "I AM ATOMIC!",
+                toastAtomicMsg: "影之卡盖诺力量已激活！"
+            },
+            ar: {
+                navAbout: "حول",
+                navTokenomics: "الاقتصاد الرقمي",
+                navBuy: "كيفية الشراء",
+                navCalc: "الحاسبة",
+                navRoadmap: "خارطة الطريق",
+                navFaq: "الأسئلة الشائعة",
+                heroBadge: "⚡ شبكة Algorand • فائقة السرعة ورسوم غاز تقريباً 0$",
+                heroTagline: "عملة الميم الشبحية الخارقة. مستوحاة من الأسطورة سيد كاجينو ومبنية على سلسلة Algorand فائقة السرعة. بدون رسوم غاز باهظة ولا معاملات فاشلة!",
+                buyBtn: "اشترِ $XEOS الآن",
+                atomicBtn: "انفجار أتوميك!",
+                blockTimeLabel: "وقت الكتلة",
+                blockTimeVal: "2.8 ثانية",
+                gasFeeLabel: "رسوم الغاز",
+                maxSupplyLabel: "الحد الأقصى للتوريد",
+                taxLabel: "ضريبة الشراء/البيع",
+                aboutTag: "// أسطورة كاجينو",
+                aboutTitle: "تحرك في الظلال، واحتل عالم الكريبتو.",
+                aboutDesc: "تم إنشاء Kagenou ($XEOS) لعشاق أنمي Shadow ومجتمع Algorand. بنينا عملة خالية من التأخير ورسوم غاز إيثيريوم الخيالية.",
+                featureLp: "سيولة (LP) مقفلة 100% للأبد",
+                featureSpeed: "تأكيد فوري في أقل من 3 ثوانٍ",
+                featureEco: "صديقة للبيئة وسالبة الانبعاثات",
+                featurePposTitle: "Pure Proof-of-Stake",
+                featurePposDesc: "أمان بدون انقسامات مدعوم من Algorand",
+                featureCommTitle: "ملكية مجتمعية",
+                featureCommDesc: "نظام بيئي مملوك للمجتمع 100%",
+                tokTitle: "اقتصاد $XEOS الرقمي",
+                tokSubtitle: "توزيع عادل وشفاف لـ 18.4 مليون عملة تم صكها على سلسلة Algorand.",
+                maxSupplyTitle: "الحد الأقصى للتوريد",
+                maxSupplyDesc: "18.4 مليون عملة $XEOS بحد أقصى ثابت. لا إصدارات مستقبلية.",
+                lpTitle: "مجمع السيولة (LP)",
+                lpDesc: "تمت إضافة 14,720,000 $XEOS إلى DEX LP وقفلها للأبد.",
+                lpStatus: "80% مقفول",
+                treasuryTitle: "الخزانة والتسويق",
+                treasuryDesc: "تم تخصيص 1,840,000 $XEOS للحملات التسويقية والإدراجات.",
+                treasuryUsage: "تسويق",
+                devTitle: "المطور / Dev",
+                devDesc: "تم تخصيص 1,840,000 $XEOS لتطوير النظام البيئي.",
+                devUsage: "تطوير",
+                buyTitle: "كيفية شراء $XEOS",
+                buySubtitle: "4 خطوات بسيطة للانضمام إلى حديقة الظلال.",
+                step1Title: "أنشئ محفظة Algorand",
+                step1Desc: "قم بتنزيل Pera Wallet أو Defly Wallet.",
+                step1Tip: "الموصى به: Pera Wallet",
+                step2Title: "احصل على ALGO",
+                step2Desc: "اشترِ ALGO من Binance أو OKX واكتب عنوان محفظتك للإرسال.",
+                step2Tip: "الشبكة: Algorand",
+                step3Title: "تفعيل ASA $XEOS",
+                step3Desc: "أضف معرف ASA ID 3672907552 في محفظتك لاستلام العملة.",
+                step3Btn: "رقم النسخة: 3672907552",
+                step4Title: "التبديل على DEX",
+                step4Desc: "ربط محفظتك بـ Vestige أو Tinyman وتبديل ALGO مقابل $XEOS!",
+                step4Btn: "فتح Vestige DEX",
+                calcBadge: "محاكي التبديل",
+                calcTitle: "حاسبة تقدير $XEOS",
+                calcSubtitle: "احسب كمية $XEOS التي ستحصل عليها مقابل ALGO.",
+                calcAlgoLabel: "كمية ALGO الخاصة بك:",
+                calcXeosLabel: "التقدير لـ $XEOS المستلمة:",
+                calcRate: "*السعر التقديري: 1 ALGO = 100 $XEOS",
+                calcBtn: "ابدأ التبديل الآن",
+                roadTitle: "خارطة الطريق",
+                roadSubtitle: "خطوة بخطوة نحو السيطرة الكاملة في عالم الكريبتو.",
+                phase1Badge: "المرحلة 1",
+                phase1Status: "مكتمل",
+                phase1Title: "الصحوة",
+                p1Item1: "إطلاق عملة $XEOS ASA",
+                p1Item2: "إطلاق صفحة الهبوط",
+                p1Item3: "قفل السيولة على DEX",
+                p1Item4: "تأسيس مجتمع X / TG",
+                phase2Badge: "المرحلة 2",
+                phase2Status: "قيد التقدم",
+                phase2Title: "حديقة الظلال",
+                p2Item1: "الإدراج على Vestige & Tinyman",
+                p2Item2: "حملات الميم والترويج",
+                p2Item3: "تقديم طلب CoinGecko / CMC",
+                p2Item4: "أول توزيع مجاني للمجتمع",
+                phase3Badge: "المرحلة 3",
+                phase3Status: "قريباً",
+                phase3Title: "توسع الهلام",
+                p3Item1: "إطلاق مجموعة Shadow NFT",
+                p3Item2: "دمج تحصيص $XEOS Staking",
+                p3Item3: "شراكات نظام Algorand",
+                p3Item4: "أكثر من 5000 حامل للعملة",
+                phase4Badge: "المرحلة 4",
+                phase4Status: "قريباً",
+                phase4Title: "الانفجار الأتوميك",
+                p4Item1: "الإدراج في منصات CEX Tier-2",
+                p4Item2: "لعبة بوت تلغرام Shadow",
+                p4Item3: "السيادة على عملات الميم في Algorand",
+                p4Item4: "إلى القمر! 🚀",
+                faqTitle: "الأسئلة الشائعة (FAQ)",
+                faqSubtitle: "كل ما تحتاج معرفته عن مشروع $XEOS.",
+                faq1Q: "ما هو Kagenou ($XEOS)؟",
+                faq1A: "Kagenou ($XEOS) هي عملة ميم مجتمعية مبنية على سلسلة Algorand (معرف ASA: 3672907552).",
+                faq2Q: "لماذا اخترنا Algorand؟",
+                faq2A: "توفر Algorand تأكيداً أقل من 3 ثوانٍ، ورسوم غاز شبه معدومة!",
+                faq3Q: "هل السيولة مقفلة وآمنة؟",
+                faq3A: "نعم، 100% من سيولة DEX الأولية مقفلة بشكل دائم.",
+                footerDesc: "عملة الميم الشبحية الأكثر قوة على Algorand.",
+                footerNavHeader: "الاستكشاف",
+                footerCommunityHeader: "المجتمع و DEX",
+                footerDisclaimer: "تنويه: $XEOS عملة ميم للترفيه فقط.",
+                toastCopiedTitle: "تم نسخ معرف ASA!",
+                toastCopiedMsg: "المعرف 13374203672907552لاستخدام.",
+                toastAtomicTitle: "أنا أتوميك!",
+                toastAtomicMsg: "تم تفعيل قوة شادو كاجينو!"
+            },
+            it: {
+                navAbout: "Info",
+                navTokenomics: "Tokenomics",
+                navBuy: "Come Acquistare",
+                navCalc: "Calcolatore",
+                navRoadmap: "Roadmap",
+                navFaq: "FAQ",
+                heroBadge: "⚡ Rete Algorand • Istantanea & Gas Fee Quasi zero",
+                heroTagline: "Il memecoin definitivo delle ombre. Ispirato al leggendario Cid Kagenou e basato sulla velocissima blockchain Algorand. Nessuna commissione alta, nessuna transazione fallita!",
+                buyBtn: "ACQUISTA $XEOS ORA",
+                atomicBtn: "ESPLOSIONE ATOMICA!",
+                blockTimeLabel: "Tempo Blocco",
+                blockTimeVal: "2.8 Secondi",
+                gasFeeLabel: "Commissione Gas",
+                maxSupplyLabel: "Offerta Massima",
+                taxLabel: "Tassa Compra/Vendi",
+                aboutTag: "// LA LEGGENDA DI KAGENOU",
+                aboutTitle: "Muoviti nell'Ombra, Domina il Mondo Crypto.",
+                aboutDesc: "Kagenou ($XEOS) è stato creato per i fan dell'anime Shadow e la community Algorand. Sviluppato senza rallentamenti né folli gas fee di Ethereum.",
+                featureLp: "100% Liquidità Bloccata per Sempre",
+                featureSpeed: "Finalità Sub-3s Istantanea Algorand",
+                featureEco: "Eco-sostenibile & Carbon-Negative",
+                featurePposTitle: "Pure Proof-of-Stake",
+                featurePposDesc: "Sicurezza senza fork basata su Algorand.",
+                featureCommTitle: "Proprietà della Community",
+                featureCommDesc: "Ecosistema guidato al 100% dalla community.",
+                tokTitle: "TOKENOMICS $XEOS",
+                tokSubtitle: "Distribuzione equa e trasparente di 18,4 milioni di token coniati su Algorand.",
+                maxSupplyTitle: "Offerta Massima",
+                maxSupplyDesc: "18,4 Milioni di token $XEOS limite fisso. Nessuna coniazione futura.",
+                lpTitle: "Pool di Liquidità (LP)",
+                lpDesc: "14.720.000 $XEOS aggiunti a DEX LP e bloccati per sempre.",
+                lpStatus: "80% Bloccato",
+                treasuryTitle: "Tesoreria & Marketing",
+                treasuryDesc: "1.840.000 $XEOS allocati per campagne marketing e listing.",
+                treasuryUsage: "Marketing",
+                devTitle: "Sviluppatore / Dev",
+                devDesc: "1.840.000 $XEOS dedicati allo sviluppo dell'ecosistema.",
+                devUsage: "Dev & Eco",
+                buyTitle: "COME ACQUISTARE $XEOS",
+                buySubtitle: "Solo 4 semplici passaggi per unirti al Shadow Garden.",
+                step1Title: "Crea un Wallet Algorand",
+                step1Desc: "Scarica Pera Wallet o Defly Wallet su mobile o browser.",
+                step1Tip: "Consigliato: Pera Wallet",
+                step2Title: "Ottieni ALGO",
+                step2Desc: "Acquista ALGO su Binance o Coinbase e invialo al tuo wallet.",
+                step2Tip: "Rete: Algorand",
+                step3Title: "Opt-in ASA $XEOS",
+                step3Desc: "Aggiungi l'ID ASA 3672907552 nel tuo wallet per abilitare la ricezione.",
+                step3Btn: "Copia ID: 3672907552",
+                step4Title: "Scambia su DEX",
+                step4Desc: "Connetti il tuo wallet a Vestige o Tinyman e scambia ALGO con $XEOS!",
+                step4Btn: "Apri Vestige DEX",
+                calcBadge: "SIMULATORE SWAP",
+                calcTitle: "Calcolatore Stima $XEOS",
+                calcSubtitle: "Calcola quanti token $XEOS riceverai in cambio dei tuoi ALGO.",
+                calcAlgoLabel: "Importo ALGO:",
+                calcXeosLabel: "Stima $XEOS Ricevuti:",
+                calcRate: "*Tasso stimato: 1 ALGO = 100 $XEOS",
+                calcBtn: "SCAMBIA ORA SU DEX",
+                roadTitle: "ROADMAP",
+                roadSubtitle: "Passo dopo passo verso la totale dominanza crypto nell'ombra.",
+                phase1Badge: "FASE 1",
+                phase1Status: "Completato",
+                phase1Title: "Risveglio",
+                p1Item1: "Lancio Token ASA $XEOS",
+                p1Item2: "Lancio Landing Page",
+                p1Item3: "Blocco Liquidità su DEX",
+                p1Item4: "Creazione Community X/TG",
+                phase2Badge: "FASE 2",
+                phase2Status: "In Corso",
+                phase2Title: "Shadow Garden",
+                p2Item1: "Listing su Vestige & Tinyman",
+                p2Item2: "Campagne Meme & Raid",
+                p2Item3: "Candidatura CoinGecko / CMC",
+                p2Item4: "Primo Airdrop per la Community",
+                phase3Badge: "FASE 3",
+                phase3Status: "In Arrivo",
+                phase3Title: "Espansione Slime",
+                p3Item1: "Lancio Collezione Shadow NFT",
+                p3Item2: "Integrazione Staking $XEOS",
+                p3Item3: "Partnership Ecosistema Algo",
+                p3Item4: "Oltre 5.000 Holder",
+                phase4Badge: "FASE 4",
+                phase4Status: "In Arrivo",
+                phase4Title: "Esplosione Atomica",
+                p4Item1: "Listing CEX Tier-2",
+                p4Item2: "Gioco Bot Telegram Shadow",
+                p4Item3: "Dominio Memecoin su Algorand",
+                p4Item4: "Verso la Luna! 🚀",
+                faqTitle: "DOMANDE FREQUENTI (FAQ)",
+                faqSubtitle: "Tutto ciò che devi sapere sul progetto $XEOS.",
+                faq1Q: "Cos'è Kagenou ($XEOS)?",
+                faq1A: "Kagenou ($XEOS) è un memecoin comunitario basato sulla blockchain Algorand (ID ASA: 3672907552).",
+                faq2Q: "Perché scegliere la Blockchain Algorand?",
+                faq2A: "Algorand offre transazioni in meno di 3 secondi, gas fee praticamente azzerate!",
+                faq3Q: "La liquidità (LP) è bloccata e sicura?",
+                faq3A: "Sì, il 100% della liquidità iniziale DEX è bloccato permanentemente.",
+                footerDesc: "Il memecoin delle ombre più potente su Algorand.",
+                footerNavHeader: "Navigazione",
+                footerCommunityHeader: "Community & DEX",
+                footerDisclaimer: "Disclaimer: $XEOS è un memecoin per puro intrattenimento.",
+                toastCopiedTitle: "ID ASA Copiato!",
+                toastCopiedMsg: "ID: 3672907552 pronto per Pera Wallet.",
+                toastAtomicTitle: "I AM ATOMIC!",
+                toastAtomicMsg: "Potere di Shadow Kagenou Attivato!"
+            },
+            es: {
+                navAbout: "Nosotros",
+                navTokenomics: "Tokenomics",
+                navBuy: "Cómo Comprar",
+                navCalc: "Calculadora",
+                navRoadmap: "Hoja de Ruta",
+                navFaq: "Preguntas Frecuentes",
+                heroBadge: "⚡ Red Algorand • Instantánea y Tarifas de Gas Cercanas a 0$",
+                heroTagline: "El token memecoin de las sombras definitivo. Inspirado en el legendario Cid Kagenou y construido en la ultrarrápida blockchain de Algorand. ¡Sin tarifas altas, sin transacciones fallidas!",
+                buyBtn: "COMPRAR $XEOS AHORA",
+                atomicBtn: "¡EXPLOSIÓN ATÓMICA!",
+                blockTimeLabel: "Tiempo de Bloque",
+                blockTimeVal: "2.8 Segundos",
+                gasFeeLabel: "Tarifa de Gas",
+                maxSupplyLabel: "Suministro Máx",
+                taxLabel: "Impuesto Compra/Venta",
+                aboutTag: "// LA LEYENDA DE KAGENOU",
+                aboutTitle: "Muévete en las Sombras, Domina el Mundo Crypto.",
+                aboutDesc: "Kagenou ($XEOS) fue creado para los fans del anime Shadow y la comunidad de Algorand. Un token libre de transacciones lentas y de las locas tarifas de Ethereum.",
+                featureLp: "100% Liquidez Bloqueada para Siempre",
+                featureSpeed: "Finalidad Sub-3s de Algorand",
+                featureEco: "Ecológico & Carbono Negativo",
+                featurePposTitle: "Pure Proof-of-Stake",
+                featurePposDesc: "Seguridad sin bifurcaciones con Algorand.",
+                featureCommTitle: "Propiedad de la Comunidad",
+                featureCommDesc: "Ecosistema 100% impulsado por la comunidad.",
+                tokTitle: "TOKENOMICS $XEOS",
+                tokSubtitle: "Distribución justa y transparente de 18.4 Millones de tokens forjados en Algorand.",
+                maxSupplyTitle: "Suministro Máximo",
+                maxSupplyDesc: "18.4 Millones de $XEOS límite fijo. Sin emisión futura.",
+                lpTitle: "Piscina de Liquidez (LP)",
+                lpDesc: "14,720,000 $XEOS añadidos al LP de DEX y bloqueados para siempre.",
+                lpStatus: "80% Bloqueado",
+                treasuryTitle: "Tesorería y Marketing",
+                treasuryDesc: "1,840,000 $XEOS asignados para marketing, airdrops y listados.",
+                treasuryUsage: "Marketing",
+                devTitle: "Creador / Dev",
+                devDesc: "1,840,000 $XEOS dedicados al desarrollo continuo del ecosistema.",
+                devUsage: "Dev y Eco",
+                buyTitle: "CÓMO COMPRAR $XEOS",
+                buySubtitle: "Solo 4 sencillos pasos para unirte a Shadow Garden.",
+                step1Title: "Crea una Billetera Algorand",
+                step1Desc: "Descarga Pera Wallet o Defly Wallet en tu móvil o navegador.",
+                step1Tip: "Recomendado: Pera Wallet",
+                step2Title: "Consigue ALGO",
+                step2Desc: "Compra ALGO en Binance o Coinbase y envíalo a tu billetera.",
+                step2Tip: "Red: Algorand",
+                step3Title: "Opt-in ASA $XEOS",
+                step3Desc: "Añade el ID ASA 3672907552 en tu billetera para recibir tokens.",
+                step3Btn: "Copiar ID: 3672907552",
+                step4Title: "Intercambia en DEX",
+                step4Desc: "Conecta tu billetera a Vestige o Tinyman ¡y cambia ALGO por $XEOS!",
+                step4Btn: "Abrir Vestige DEX",
+                calcBadge: "SIMULADOR DE SWAP",
+                calcTitle: "Calculadora de Estimación $XEOS",
+                calcSubtitle: "Calcula cuántos tokens $XEOS recibirás por tus ALGO.",
+                calcAlgoLabel: "Tu Cantidad de ALGO:",
+                calcXeosLabel: "Estimación de $XEOS a Recibir:",
+                calcRate: "*Tasa estimada: 1 ALGO = 100 $XEOS",
+                calcBtn: "INTERCAMBIAR AHORA EN DEX",
+                roadTitle: "HOJA DE RUTA",
+                roadSubtitle: "Paso a paso hacia el dominio total de las sombras en crypto.",
+                phase1Badge: "FASE 1",
+                phase1Status: "Completado",
+                phase1Title: "El Despertar",
+                p1Item1: "Lanzamiento Token ASA $XEOS",
+                p1Item2: "Lanzamiento Landing Page",
+                p1Item3: "Bloqueo de Liquidez en DEX",
+                p1Item4: "Creación Comunidad X/TG",
+                phase2Badge: "FASE 2",
+                phase2Status: "En Progreso",
+                phase2Title: "Jardín de las Sombras",
+                p2Item1: "Listado en Vestige & Tinyman",
+                p2Item2: "Campañas Meme & Raids",
+                p2Item3: "Solicitud CoinGecko / CMC",
+                p2Item4: "Primer Airdrop Comunitario",
+                phase3Badge: "FASE 3",
+                phase3Status: "Próximamente",
+                phase3Title: "Expansión Slime",
+                p3Item1: "Lanzamiento Colección Shadow NFT",
+                p3Item2: "Integración Staking $XEOS",
+                p3Item3: "Alianzas Ecosistema Algorand",
+                p3Item4: "Más de 5,000 Holders",
+                phase4Badge: "FASE 4",
+                phase4Status: "Próximamente",
+                phase4Title: "Explosión Atómica",
+                p4Item1: "Listado en CEX Tier-2",
+                p4Item2: "Juego Bot Telegram Shadow",
+                p4Item3: "Dominio Memecoin en Algorand",
+                p4Item4: "¡A la Luna! 🚀",
+                faqTitle: "PREGUNTAS FRECUENTES (FAQ)",
+                faqSubtitle: "Todo lo que necesitas saber sobre el proyecto memecoin $XEOS.",
+                faq1Q: "¿Qué es Kagenou ($XEOS)?",
+                faq1A: "Kagenou ($XEOS) es un token memecoin comunitario construido en Algorand (ID ASA: 3672907552).",
+                faq2Q: "¿Por qué elegir la Blockchain de Algorand?",
+                faq2A: "Algorand ofrece transacciones en menos de 3 segundos y tarifas casi nulas.",
+                faq3Q: "¿La liquidez (LP) está bloqueada y segura?",
+                faq3A: "Sí, el 100% de la liquidez inicial de DEX está bloqueada permanentemente.",
+                footerDesc: "El memecoin de las sombras más poderoso en Algorand.",
+                footerNavHeader: "Navegación",
+                footerCommunityHeader: "Comunidad y DEX",
+                footerDisclaimer: "Descargo de responsabilidad: $XEOS es un memecoin solo para entretenimiento.",
+                toastCopiedTitle: "¡ID ASA Copiado!",
+                toastCopiedMsg: "ID: 3672907552 listo para Pera Wallet.",
+                toastAtomicTitle: "¡I AM ATOMIC!",
+                toastAtomicMsg: "¡Poder de Shadow Kagenou Activado!"
+            },
+            de: {
+                navAbout: "Über uns",
+                navTokenomics: "Tokenomics",
+                navBuy: "Kaufanleitung",
+                navCalc: "Rechner",
+                navRoadmap: "Roadmap",
+                navFaq: "FAQ",
+                heroBadge: "⚡ Algorand-Netzwerk • Blitzschnell & Fast 0 $ Gasgebühren",
+                heroTagline: "Der ultimative Schatten-Memecoin. Inspiriert vom legendären Cid Kagenou & gebaut auf der ultraschnellen Algorand-Blockchain. Keine hohen Gebühren!",
+                buyBtn: "JETZT $XEOS KAUFEN",
+                atomicBtn: "ATOMIC-EXPLOSION!",
+                blockTimeLabel: "Blockzeit",
+                blockTimeVal: "2,8 Sekunden",
+                gasFeeLabel: "Gasgebühr",
+                maxSupplyLabel: "Max. Angebot",
+                taxLabel: "Kauf/Verkauf Steuer",
+                aboutTag: "// DIE LEGENDE VON KAGENOU",
+                aboutTitle: "Agieren im Schatten, Beherrschen der Krypto-Welt.",
+                aboutDesc: "Kagenou ($XEOS) wurde für Schatten-Anime-Fans und die Algorand-Community entwickelt. Frei von langsamen Ladezeiten und verrückten Ethereum-Gebühren.",
+                featureLp: "100% Liquidität für immer gesperrt",
+                featureSpeed: "Algorand Sub-3s Sofortbestätigung",
+                featureEco: "Umweltfreundlich & CO2-Negativ",
+                featurePposTitle: "Pure Proof-of-Stake",
+                featurePposDesc: "Sicherheit ohne Forks durch Algorand.",
+                featureCommTitle: "Community-Besitz",
+                featureCommDesc: "100% von der Community gesteuert.",
+                tokTitle: "TOKENOMICS $XEOS",
+                tokSubtitle: "Faire und transparente Verteilung von 18,4 Millionen Token auf Algorand.",
+                maxSupplyTitle: "Maximales Angebot",
+                maxSupplyDesc: "18,4 Millionen $XEOS Token Obergrenze. Kein weiteres Prägen.",
+                lpTitle: "Liquiditätspool (LP)",
+                lpDesc: "14.720.000 $XEOS zu DEX LP hinzugefügt und für immer gesperrt.",
+                lpStatus: "80% Gesperrt",
+                treasuryTitle: "Schatzkammer & Marketing",
+                treasuryDesc: "1.840.000 $XEOS für Marketingkampagnen, Airdrops und Listings.",
+                treasuryUsage: "Marketing",
+                devTitle: "Entwickler / Dev",
+                devDesc: "1.840.000 $XEOS für die fortlaufende Ökosystem-Entwicklung.",
+                devUsage: "Dev & Öko",
+                buyTitle: "WIE MAN $XEOS KAUFT",
+                buySubtitle: "In 4 einfachen Schritten dem Shadow Garden beitreten.",
+                step1Title: "Algorand-Wallet erstellen",
+                step1Desc: "Lade Pera Wallet oder Defly Wallet auf dein Smartphone.",
+                step1Tip: "Empfohlen: Pera Wallet",
+                step2Title: "ALGO kaufen",
+                step2Desc: "Kaufe ALGO auf Binance oder Coinbase und sende es an deine Wallet.",
+                step2Tip: "Netzwerk: Algorand",
+                step3Title: "ASA $XEOS Opt-in",
+                step3Desc: "Füge ASA-ID 3672907552 in deiner Wallet hinzu, um Token zu empfangen.",
+                step3Btn: "ID kopieren: 3672907552",
+                step4Title: "Auf DEX tauschen",
+                step4Desc: "Verbinde deine Wallet mit Vestige oder Tinyman und tausche ALGO gegen $XEOS!",
+                step4Btn: "Vestige DEX öffnen",
+                calcBadge: "TAUSCH-SIMULATOR",
+                calcTitle: "$XEOS Schätzrechner",
+                calcSubtitle: "Berechne, wie viele $XEOS Token du für deine ALGO erhältst.",
+                calcAlgoLabel: "Deine ALGO Menge:",
+                calcXeosLabel: "Geschätzte $XEOS Erhalten:",
+                calcRate: "*Geschätzter Kurs: 1 ALGO = 100 $XEOS",
+                calcBtn: "JETZT AUF DEX TAUSCHEN",
+                roadTitle: "ROADMAP",
+                roadSubtitle: "Schritt für Schritt zur Krypto-Schattenherrschaft.",
+                phase1Badge: "PHASE 1",
+                phase1Status: "Abgeschlossen",
+                phase1Title: "Erwachen",
+                p1Item1: "Launch ASA Token $XEOS",
+                p1Item2: "Launch Landing Page",
+                p1Item3: "Liquidität auf DEX sperren",
+                p1Item4: "X/TG Community gründen",
+                phase2Badge: "PHASE 2",
+                phase2Status: "In Bearbeitung",
+                phase2Title: "Shadow Garden",
+                p2Item1: "Listing auf Vestige & Tinyman",
+                p2Item2: "Meme- & Raid-Kampagnen",
+                p2Item3: "CoinGecko / CMC Antrag",
+                p2Item4: "Erster Community Airdrop",
+                phase3Badge: "PHASE 3",
+                phase3Status: "Demnächst",
+                phase3Title: "Slime-Expansion",
+                p3Item1: "Launch Shadow NFT-Kollektion",
+                p3Item2: "Integration von $XEOS Staking",
+                p3Item3: "Partnerschaften im Algo-Ökosystem",
+                p3Item4: "Über 5.000 Token-Halter",
+                phase4Badge: "PHASE 4",
+                phase4Status: "Demnächst",
+                phase4Title: "Atomic-Explosion",
+                p4Item1: "Tier-2 CEX Listings",
+                p4Item2: "Telegram Shadow Bot Spiel",
+                p4Item3: "Algorand Memecoin-Dominanz",
+                p4Item4: "Zum Mond! 🚀",
+                faqTitle: "HÄUFIG GESTELLTE FRAGEN",
+                faqSubtitle: "Alles, was du über das Memecoin-Projekt $XEOS wissen musst.",
+                faq1Q: "Was ist Kagenou ($XEOS)?",
+                faq1A: "Kagenou ($XEOS) ist ein Community-Memecoin auf der Algorand-Blockchain (ASA ID: 3672907552).",
+                faq2Q: "Warum die Algorand-Blockchain?",
+                faq2A: "Algorand bietet Transaktionszeiten unter 3 Sekunden und praktisch Null Gasgebühren!",
+                faq3Q: "Ist die Liquidität (LP) gesperrt?",
+                faq3A: "Ja, 100% der anfänglichen DEX-Liquidität ist dauerhaft gesperrt.",
+                footerDesc: "Der mächtigste Schatten-Memecoin auf Algorand.",
+                footerNavHeader: "Navigation",
+                footerCommunityHeader: "Community & DEX",
+                footerDisclaimer: "Haftungsausschluss: $XEOS ist ein Memecoin für Unterhaltungszwecke.",
+                toastCopiedTitle: "ASA-ID kopiert!",
+                toastCopiedMsg: "ID: 3672907552 bereit für Pera Wallet.",
+                toastAtomicTitle: "I AM ATOMIC!",
+                toastAtomicMsg: "Shadow Kagenou Kraft aktiviert!"
+            },
+            uk: {
+                navAbout: "Про проект",
+                navTokenomics: "Токеноміка",
+                navBuy: "Як купити",
+                navCalc: "Калькулятор",
+                navRoadmap: "Дорожня карта",
+                navFaq: "FAQ",
+                heroBadge: "⚡ Мережа Algorand • Ультрашвидко та комісія ~$0",
+                heroTagline: "Найпотужніший тіньовий мемкоїн. Натхненний легендарним Сідом Кагено та створений на надшвидкому блокчейні Algorand. Без високих комісій!",
+                buyBtn: "КУПИТИ $XEOS ЗАРАЗ",
+                atomicBtn: "АТОМНИЙ ВИБУХ!",
+                blockTimeLabel: "Час блоку",
+                blockTimeVal: "2.8 Секунди",
+                gasFeeLabel: "Комісія Gas",
+                maxSupplyLabel: "Макс. пропозиція",
+                taxLabel: "Податок купівлі/продажу",
+                aboutTag: "// ЛЕГЕНДА ПРО КАГЕНО",
+                aboutTitle: "Дій у тіні, пануй у світі крипти.",
+                aboutDesc: "Kagenou ($XEOS) створений для фанатів аніме Shadow та спільноти Algorand. Без затримок і божевільних комісій Ethereum.",
+                featureLp: "100% Ліквідності заблоковано назавжди",
+                featureSpeed: "Миттєве підтвердження за <3с",
+                featureEco: "Екологічний & Вуглецево-негативний",
+                featurePposTitle: "Pure Proof-of-Stake",
+                featurePposDesc: "Безфоркова безпека на Algorand.",
+                featureCommTitle: "У власності спільноти",
+                featureCommDesc: "100% екосистема спільноти.",
+                tokTitle: "ТОКЕНОМІКА $XEOS",
+                tokSubtitle: "Чесний і прозорий розподіл 18.4 мільйонів токенів на блокчейні Algorand.",
+                maxSupplyTitle: "Максимальна пропозиція",
+                maxSupplyDesc: "18.4 Мільйонів токенів $XEOS обмежено. Без додаткового випуску.",
+                lpTitle: "Пул ліквідності (LP)",
+                lpDesc: "14,720,000 $XEOS додано в DEX LP та заблоковано назавжди.",
+                lpStatus: "80% Заблоковано",
+                treasuryTitle: "Скарбниця та Маркетинг",
+                treasuryDesc: "1,840,000 $XEOS виділено на маркетинг, аірдропи та лістинги.",
+                treasuryUsage: "Маркетинг",
+                devTitle: "Розробник / Dev",
+                devDesc: "1,840,000 $XEOS призначено для подальшого розвитку екосистеми.",
+                devUsage: "Розробка",
+                buyTitle: "ЯК КУПИТИ $XEOS",
+                buySubtitle: "Всього 4 простих кроки, щоб приєднатися до Shadow Garden.",
+                step1Title: "Створіть гаманець Algorand",
+                step1Desc: "Завантажте Pera Wallet або Defly Wallet на свій смартфон.",
+                step1Tip: "Рекомендовано: Pera Wallet",
+                step2Title: "Отримайте ALGO",
+                step2Desc: "Купіть ALGO на Binance або WhiteBIT та виведіть на свій гаманець.",
+                step2Tip: "Мережа: Algorand",
+                step3Title: "Opt-in ASA $XEOS",
+                step3Desc: "Додайте ASA ID 3672907552 у своєму гаманці для отримання токенів.",
+                step3Btn: "Скопіювати ID: 3672907552",
+                step4Title: "Обміняйте на DEX",
+                step4Desc: "Підключіть гаманець до Vestige чи Tinyman та обміняйте ALGO на $XEOS!",
+                step4Btn: "Відкрити Vestige DEX",
+                calcBadge: "СИМУЛЯТОР ОБМІНУ",
+                calcTitle: "Калькулятор оцінки $XEOS",
+                calcSubtitle: "Розрахуйте, скільки токенів $XEOS ви отримаєте за свої ALGO.",
+                calcAlgoLabel: "Ваша кількість ALGO:",
+                calcXeosLabel: "Очікувано $XEOS:",
+                calcRate: "*Очікуваний курс: 1 ALGO = 100 $XEOS",
+                calcBtn: "ОБМІНЯТИ ЗАРАЗ НА DEX",
+                roadTitle: "ДОРОЖНЯ КАРТА",
+                roadSubtitle: "Крок за кроком до повного панування в тіньовому криптосвіті.",
+                phase1Badge: "ФАЗА 1",
+                phase1Status: "Завершено",
+                phase1Title: "Пробудження",
+                p1Item1: "Запуск токена ASA $XEOS",
+                p1Item2: "Запуск Landing Page",
+                p1Item3: "Блокування ліквідності на DEX",
+                p1Item4: "Створення спільноти X/TG",
+                phase2Badge: "ФАЗА 2",
+                phase2Status: "В процесі",
+                phase2Title: "Shadow Garden",
+                p2Item1: "Лістинг на Vestige & Tinyman",
+                p2Item2: "Мем та Raid кампанії",
+                p2Item3: "Заявка на CoinGecko / CMC",
+                p2Item4: "Перший аірдроп спільноти",
+                phase3Badge: "ФАЗА 3",
+                phase3Status: "Незабаром",
+                phase3Title: "Розширення Слаймів",
+                p3Item1: "Запуск колекції Shadow NFT",
+                p3Item2: "Інтеграція стейкінгу $XEOS",
+                p3Item3: "Партнерства в екосистемі Algo",
+                p3Item4: "5,000+ власників токена",
+                phase4Badge: "ФАЗА 4",
+                phase4Status: "Незабаром",
+                phase4Title: "Атомний Вибух",
+                p4Item1: "Лістинг на CEX Tier-2",
+                p4Item2: "Гра Shadow Bot в Telegram",
+                p4Item3: "Домінування мемкоїнів на Algorand",
+                p4Item4: "До Місяця! 🚀",
+                faqTitle: "ЧАСТІ ПИТАННЯ (FAQ)",
+                faqSubtitle: "Все, що вам потрібно знати про мемкоїн $XEOS.",
+                faq1Q: "Що таке Kagenou ($XEOS)?",
+                faq1A: "Kagenou ($XEOS) — це спільнотний мемкоїн на блокчейні Algorand (ASA ID: 3672907552).",
+                faq2Q: "Чому саме блокчейн Algorand?",
+                faq2A: "Algorand забезпечує час транзакції до 3 секунд та майже нульову комісію!",
+                faq3Q: "Чи заблокована ліквідність (LP)?",
+                faq3A: "Так, 100% початкової ліквідності DEX заблоковано назавжди.",
+                footerDesc: "Найпотужніший тіньовий мемкоїн на Algorand.",
+                footerNavHeader: "Навігація",
+                footerCommunityHeader: "Спільнота та DEX",
+                footerDisclaimer: "Відмова від відповідальності: $XEOS — це мемкоїн тільки для розваг.",
+                toastCopiedTitle: "ASA ID Скопійовано!",
+                toastCopiedMsg: "ID: 3672907552 готовий для Pera Wallet.",
+                toastAtomicTitle: "I AM ATOMIC!",
+                toastAtomicMsg: "Силу Shadow Kagenou Активовано!"
+            },
+            ru: {
+                navAbout: "О нас",
+                navTokenomics: "Токеномика",
+                navBuy: "Как купить",
+                navCalc: "Калькулятор",
+                navRoadmap: "Дорожная карта",
+                navFaq: "FAQ",
+                heroBadge: "⚡ Сеть Algorand • Ультрабыстро и комиссия ~$0",
+                heroTagline: "Мощнейший теневой мемкоин. Вдохновленный легендарным Сидом Кагено и созданный на сверхбыстром блокчейне Algorand. Без высоких комиссий!",
+                buyBtn: "КУПИТЬ $XEOS СЕЙЧАС",
+                atomicBtn: "АТОМНЫЙ ВЗРЫВ!",
+                blockTimeLabel: "Время блока",
+                blockTimeVal: "2.8 Секунды",
+                gasFeeLabel: "Комиссия Gas",
+                maxSupplyLabel: "Макс. предложение",
+                taxLabel: "Налог покупка/продажа",
+                aboutTag: "// ЛЕГЕНДА О КАГЕНО",
+                aboutTitle: "Действуй в тени, правь миром крипты.",
+                aboutDesc: "Kagenou ($XEOS) создан для фанатов аниме Shadow и сообщества Algorand. Без задержек и сумасшедших комиссий Ethereum.",
+                featureLp: "100% Ликвидности заблокировано навсегда",
+                featureSpeed: "Мгновенное подтверждение <3с",
+                featureEco: "Экологичный & Углеродно-отрицательный",
+                featurePposTitle: "Pure Proof-of-Stake",
+                featurePposDesc: "Безопасность без форков на Algorand.",
+                featureCommTitle: "Собственность сообщества",
+                featureCommDesc: "100% экосистема сообщества.",
+                tokTitle: "ТОКЕНОМИКА $XEOS",
+                tokSubtitle: "Честное и прозрачное распределение 18.4 млн токенов на блокчейне Algorand.",
+                maxSupplyTitle: "Максимальное предложение",
+                maxSupplyDesc: "18.4 Млн токенов $XEOS ограничено. Без дополнительной эмиссии.",
+                lpTitle: "Пул ликвидности (LP)",
+                lpDesc: "14,720,000 $XEOS добавлено в DEX LP и заблокировано навсегда.",
+                lpStatus: "80% Заблокировано",
+                treasuryTitle: "Казначейство и Маркетинг",
+                treasuryDesc: "1,840,000 $XEOS выделено на маркетинг, аирдропы и листинги.",
+                treasuryUsage: "Маркетинг",
+                devTitle: "Разработчик / Dev",
+                devDesc: "1,840,000 $XEOS предназначено для развития экосистемы.",
+                devUsage: "Разработка",
+                buyTitle: "КАК КУПИТЬ $XEOS",
+                buySubtitle: "Всего 4 простых шага, чтобы присоединиться к Shadow Garden.",
+                step1Title: "Создайте кошелек Algorand",
+                step1Desc: "Скачайте Pera Wallet или Defly Wallet на свой смартфон.",
+                step1Tip: "Рекомендуем: Pera Wallet",
+                step2Title: "Получите ALGO",
+                step2Desc: "Купите ALGO на Binance или Bybit и выведите на свой кошелек.",
+                step2Tip: "Сеть: Algorand",
+                step3Title: "Opt-in ASA $XEOS",
+                step3Desc: "Добавьте ASA ID 3672907552 в своем кошельке для получения токенов.",
+                step3Btn: "Скопировать ID: 3672907552",
+                step4Title: "Обменяйте на DEX",
+                step4Desc: "Подключите кошелек к Vestige или Tinyman и обменяйте ALGO на $XEOS!",
+                step4Btn: "Открыть Vestige DEX",
+                calcBadge: "СИМУЛЯТОР ОБМЕНА",
+                calcTitle: "Калькулятор оценки $XEOS",
+                calcSubtitle: "Рассчитайте, сколько токенов $XEOS вы получите за свои ALGO.",
+                calcAlgoLabel: "Ваше количество ALGO:",
+                calcXeosLabel: "Ожидается $XEOS:",
+                calcRate: "*Ориентировочный курс: 1 ALGO = 100 $XEOS",
+                calcBtn: "ОБМЕНЯТЬ СЕЙЧАС НА DEX",
+                roadTitle: "ДОРОЖНАЯ КАРТА",
+                roadSubtitle: "Шаг за шагом к полному господству в теневом криптомире.",
+                phase1Badge: "ФАЗА 1",
+                phase1Status: "Завершено",
+                phase1Title: "Пробуждение",
+                p1Item1: "Запуск токена ASA $XEOS",
+                p1Item2: "Запуск Landing Page",
+                p1Item3: "Блокировка ликвидности на DEX",
+                p1Item4: "Создание сообщества X/TG",
+                phase2Badge: "ФАЗА 2",
+                phase2Status: "В процессе",
+                phase2Title: "Shadow Garden",
+                p2Item1: "Листинг на Vestige & Tinyman",
+                p2Item2: "Мем и Raid кампании",
+                p2Item3: "Заявка на CoinGecko / CMC",
+                p2Item4: "Первый аирдроп сообщества",
+                phase3Badge: "ФАЗА 3",
+                phase3Status: "Скоро",
+                phase3Title: "Расширение Слаймов",
+                p3Item1: "Запуск коллекции Shadow NFT",
+                p3Item2: "Интеграция стейкинга $XEOS",
+                p3Item3: "Партнерства в экосистеме Algo",
+                p3Item4: "5,000+ держателей токена",
+                phase4Badge: "ФАЗА 4",
+                phase4Status: "Скоро",
+                phase4Title: "Атомный Взрыв",
+                p4Item1: "Листинг на CEX Tier-2",
+                p4Item2: "Игра Shadow Bot в Telegram",
+                p4Item3: "Доминирование мемкоинов на Algorand",
+                p4Item4: "На Луну! 🚀",
+                faqTitle: "ЧАСТО ЗАДАВАЕМЫЕ ВОПРОСЫ",
+                faqSubtitle: "Все, что вам нужно знать о мемкоине $XEOS.",
+                faq1Q: "Что такое Kagenou ($XEOS)?",
+                faq1A: "Kagenou ($XEOS) — это сообщественный мемкоин на блокчейне Algorand (ASA ID: 3672907552).",
+                faq2Q: "Почему именно блокчейн Algorand?",
+                faq2A: "Algorand обеспечивает время транзакции до 3 секунд и почти нулевую комиссию!",
+                faq3Q: "Заблокирована ли ликвидность (LP)?",
+                faq3A: "Да, 100% первоначальной ликвидности DEX заблокировано навсегда.",
+                footerDesc: "Мощнейший теневой мемкоин на Algorand.",
+                footerNavHeader: "Навигация",
+                footerCommunityHeader: "Сообщество и DEX",
+                footerDisclaimer: "Отказ от ответственности: $XEOS — это мемкоин только для развлечения.",
+                toastCopiedTitle: "ASA ID Скопирован!",
+                toastCopiedMsg: "ID: 3672907552 готов для Pera Wallet.",
+                toastAtomicTitle: "I AM ATOMIC!",
+                toastAtomicMsg: "Сила Shadow Kagenou Активирована!"
+            }
+        };
+
+        let currentLang = 'en';
+
+        function changeLanguage(langCode) {
+            if (!translations[langCode]) return;
+            currentLang = langCode;
+
+            document.getElementById('langSelectDesktop').value = langCode;
+            document.getElementById('langSelectMobile').value = langCode;
+
+            if (langCode === 'ar') {
+                document.documentElement.setAttribute('dir', 'rtl');
+            } else {
+                document.documentElement.setAttribute('dir', 'ltr');
+            }
+
+            const elements = document.querySelectorAll('[data-i18n]');
+            elements.forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (translations[currentLang][key]) {
+                    el.innerText = translations[currentLang][key];
+                }
+            });
+        }
+
+        const canvas = document.getElementById('shadowCanvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        class Particle {
+            constructor() {
+                this.reset();
+            }
+            reset() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 2 + 0.5;
+                this.speedX = (Math.random() - 0.5) * 0.5;
+                this.speedY = (Math.random() - 0.5) * 0.5;
+                this.alpha = Math.random() * 0.6 + 0.1;
+                this.color = Math.random() > 0.5 ? '#9d4edd' : '#c77dff';
+            }
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+
+                if (this.x < 0 || this.x > canvas.width || this.y < 0 || this.y > canvas.height) {
+                    this.reset();
+                }
+            }
+            draw() {
+                ctx.save();
+                ctx.globalAlpha = this.alpha;
+                ctx.fillStyle = this.color;
+                ctx.shadowBlur = 10;
+                ctx.shadowColor = this.color;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.restore();
+            }
+        }
+
+        for (let i = 0; i < 60; i++) {
+            particles.push(new Particle());
+        }
+
+        function animateCanvas() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach(p => {
+                p.update();
+                p.draw();
+            });
+            requestAnimationFrame(animateCanvas);
+        }
+        animateCanvas();
+
+        function triggerAtomicBlast() {
+            for (let i = 0; i < 150; i++) {
+                const blastParticle = new Particle();
+                blastParticle.x = canvas.width / 2;
+                blastParticle.y = canvas.height / 2;
+                const angle = Math.random() * Math.PI * 2;
+                const speed = Math.random() * 8 + 2;
+                blastParticle.speedX = Math.cos(angle) * speed;
+                blastParticle.speedY = Math.sin(angle) * speed;
+                blastParticle.size = Math.random() * 4 + 2;
+                blastParticle.color = '#ffb703';
+                particles.push(blastParticle);
+            }
+
+            const t = translations[currentLang];
+            showToast(t.toastAtomicTitle, t.toastAtomicMsg);
+
+            setTimeout(() => {
+                if (particles.length > 200) {
+                    particles.splice(60, particles.length - 60);
+                }
+            }, 3000);
+        }
+
+        function copyASA(asaId) {
+            const textarea = document.createElement('textarea');
+            textarea.value = asaId;
+            document.body.appendChild(textarea);
+            textarea.select();
+            try {
+                document.execCommand('copy');
+                const t = translations[currentLang];
+                showToast(t.toastCopiedTitle, t.toastCopiedMsg);
+            } catch (err) {
+                console.error("Failed to copy text: ", err);
+            }
+            document.body.removeChild(textarea);
+        }
+
+        function showToast(title, msg) {
+            const toast = document.getElementById('toast');
+            document.getElementById('toastTitle').innerText = title;
+            document.getElementById('toastMessage').innerText = msg;
+
+            toast.classList.remove('translate-y-20', 'opacity-0');
+            toast.classList.add('translate-y-0', 'opacity-100');
+
+            setTimeout(() => {
+                toast.classList.remove('translate-y-0', 'opacity-100');
+                toast.classList.add('translate-y-20', 'opacity-0');
+            }, 3000);
+        }
+
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const mobileDrawer = document.getElementById('mobileDrawer');
+        const menuIcon = document.getElementById('menuIcon');
+
+        mobileMenuBtn.addEventListener('click', () => {
+            const isHidden = mobileDrawer.classList.contains('hidden');
+            if (isHidden) {
+                mobileDrawer.classList.remove('hidden');
+                menuIcon.classList.remove('fa-bars-staggered');
+                menuIcon.classList.add('fa-xmark');
+            } else {
+                mobileDrawer.classList.add('hidden');
+                menuIcon.classList.remove('fa-xmark');
+                menuIcon.classList.add('fa-bars-staggered');
+            }
+        });
+
+        document.querySelectorAll('.mobile-nav-link').forEach(link => {
+            link.addEventListener('click', () => {
+                mobileDrawer.classList.add('hidden');
+                menuIcon.classList.remove('fa-xmark');
+                menuIcon.classList.add('fa-bars-staggered');
+            });
+        });
+
+        const algoInput = document.getElementById('algoInput');
+        const xeosOutput = document.getElementById('xeosOutput');
+
+        algoInput.addEventListener('input', (e) => {
+            const val = parseFloat(e.target.value) || 0;
+            const estimated = val * 100;
+            xeosOutput.value = `${estimated.toLocaleString()} $XEOS`;
+        });
+
+        document.querySelectorAll('.faq-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const content = btn.nextElementSibling;
+                const icon = btn.querySelector('i');
+                content.classList.toggle('hidden');
+                icon.classList.toggle('rotate-180');
+            });
+        });
+
+        window.addEventListener('DOMContentLoaded', () => {
+            changeLanguage('en');
+        });
+    </script>
+</body>
+</html>
