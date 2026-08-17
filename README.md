@@ -1,4 +1,4 @@
-# OmniCodec
+# OmniCodec Studio
 
 ## Convert open-source and international audio formats effortlessly directly inside your browser. No files uploaded to servers, zero size limits, and instant processing.
 
