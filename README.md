@@ -10,7 +10,7 @@ Features:
 
 **Lightning Fast Performance** - Utilizes hardware-accelerated browser threads for instantaneous audio conversions without upload bandwidth bottleneck.
 
-## H2 Supported Open & International Audio Codecs
+## Supported Open & International Audio Codecs
 Complete decoding and encoding support for global standards
 
 **MP3 (MPEG-1 Layer 3)** - Universal Lossy Standard
