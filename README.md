@@ -32,3 +32,7 @@ Complete decoding and encoding support for global standards
 ### Let's use OmniCodec Audio Studio now.
 
 [OmniCodec Studio](https://dlordsociety32.github.io)
+
+## Did this project help you?
+
+If so, buy me a coffee through **Solana** to the address: **78q7TFeP6BDas5g1Eyj9Vr92snTaBTPGQutczXA288eg**
