@@ -31,4 +31,4 @@ Complete decoding and encoding support for global standards
 
 ### Let's use OmniCodec Audio Studio now.
 
-[Link Text](https://dlordsociety32.github.io)
+[OmniCodec Studio](https://dlordsociety32.github.io)
